@@ -5,8 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+
 @Value
-public class CustomUserDetails implements UserDetails {
+public class CustomDesignerDetails implements UserDetails {
 
     String username;
     String password;
@@ -48,3 +49,4 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 }
+

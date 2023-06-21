@@ -1,4 +1,4 @@
-package com.example.project_deck;
+package pl.coderslab;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

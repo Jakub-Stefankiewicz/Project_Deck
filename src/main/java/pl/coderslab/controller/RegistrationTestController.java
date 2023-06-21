@@ -1,7 +1,6 @@
-package pl.coderslab.security;
+package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ import pl.coderslab.repository.UserRepository;
 @Controller
 @RequestMapping("/test")
 @RequiredArgsConstructor
-public class RegistrationTest {
+public class RegistrationTestController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @GetMapping
@@ -23,7 +22,6 @@ public class RegistrationTest {
         user.setLogin("admin");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.save(user);
-
         return true;
     }
 }
