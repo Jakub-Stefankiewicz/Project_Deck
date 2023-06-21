@@ -28,7 +28,7 @@ public class DesignerController {
         return "designer/register";
     }
 
-    @GetMapping
+    @GetMapping(path = "proba")
     String homePage(){
         return "homepage";
     }
