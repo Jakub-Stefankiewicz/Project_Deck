@@ -22,47 +22,46 @@ public class Designer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotBlank
+    //    @NotBlank
     private String username;
 
-
-//    @NotBlank
+    //    @NotBlank
     private String firstName;
 
-//    @NotBlank
+    //    @NotBlank
     private String lastName;
 
     private String companyName;
 
 
-//    @Email
+    //    @Email
     private String email;
 
-//    @NotBlank
+    //    @NotBlank
     private String password;
 
-//    @NotBlank
+    //    @NotBlank
     private String city;
 
-//    @NotBlank
+    //    @NotBlank
     private String street;
 
-//    @NotBlank
+    //    @NotBlank
     private int postalCode;
 
-//    @NotBlank
+    //    @NotBlank
     private String houseNumber;
 
-//    @NotBlank
+    //    @NotBlank
     private int phone;
 
-//    @NotEmpty
+    //    @NotEmpty
     private LocalDate added;
 
-//    @NotEmpty
+    //    @NotEmpty
     private boolean active;
 
-//    @NotEmpty
+    //    @NotEmpty
     @OneToMany
     @ToString.Exclude
     private List<Customer> customers;

@@ -11,14 +11,15 @@
 
 <html>
 <head>
-    <title>Add Designer</title>
+    <title>Register designer</title>
 </head>
 <body>
 <form:form method="post" modelAttribute="emptyDesigner">
 
 
-    <div> Email <form:input path="email"/></div>
+    <div> Login <form:input path="username"/></div>
     <div> Password <form:input path="password"/></div>
+    <div> Email <form:input path="email"/></div>
     <div> First Name <form:input path="firstName"/></div>
     <div> Last Name <form:input path="lastName"/></div>
     <div> Company <form:input path="companyName"/></div>
