@@ -1,15 +1,9 @@
 package pl.coderslab.entity;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,12 +27,10 @@ public class Designer {
 
     private String companyName;
 
-
+    private String password;
     //    @Email
     private String email;
 
-    //    @NotBlank
-    private String password;
 
     //    @NotBlank
     private String city;
@@ -62,8 +54,8 @@ public class Designer {
     private boolean active;
 
     //    @NotEmpty
-    @OneToMany
+    @OneToMany(mappedBy = "designer")
     @ToString.Exclude
-    private List<Customer> customers;
+    private List<Customer> customer = new ArrayList<>();
 
 }

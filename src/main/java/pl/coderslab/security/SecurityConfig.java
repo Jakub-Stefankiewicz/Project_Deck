@@ -26,11 +26,11 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/test", "/login", "/**").permitAll()
+                        .requestMatchers("/", "/home", "/test", "/login","/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-//                        .loginPage("/loginpage")
+                        .loginPage("/login")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());

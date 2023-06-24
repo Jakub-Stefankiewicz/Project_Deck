@@ -1,11 +1,6 @@
 package pl.coderslab.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.time.LocalDate;
 
 @Entity
@@ -27,8 +22,6 @@ public class Customer {
 
     //    @Email
     private String email;
-
-    //    @NotBlank
     private String password;
 
     //    @NotBlank
@@ -52,6 +45,8 @@ public class Customer {
     //    @NotEmpty
     private boolean active;
 
-
+    @ManyToOne
+    //    @NotEmpty
+    private Designer designer;
 
 }

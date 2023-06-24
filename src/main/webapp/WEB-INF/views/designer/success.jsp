@@ -12,7 +12,7 @@
 </head>
 <body>
 Designer succsessfully added! <br>
-<div>Hi, %${designer.firstName}! </div>
+<div>Hi, ${designer.firstName}! </div>
 <a href="/login">Click here to log in</a> <br>
 <a href="/">Return to homepage</a>
 </body>

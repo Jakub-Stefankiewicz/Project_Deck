@@ -13,7 +13,7 @@
 </head>
 <body>
 Customer succsessfully added! <br>
-<div>Hi, %${customer.firstName}! </div>
+<div>Hi, ${customer.firstName}! </div>
 <a href="/login">Click here to log in</a> <br>
 <a href="/">Return to homepage</a>
 </body>
