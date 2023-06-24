@@ -1,6 +1,7 @@
-package pl.coderslab.security;
+package pl.coderslab.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import pl.coderslab.entity.User;
 
 import java.util.Optional;
 
