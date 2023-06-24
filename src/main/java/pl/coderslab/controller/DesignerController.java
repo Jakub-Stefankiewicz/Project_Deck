@@ -6,9 +6,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.entity.Authorization;
 import pl.coderslab.entity.Customer;
 import pl.coderslab.entity.Deal;
 import pl.coderslab.entity.Designer;
+import pl.coderslab.service.AuthorizationService;
 import pl.coderslab.service.CustomCustomerDetailsService;
 import pl.coderslab.service.CustomDesignerDetailsService;
 import pl.coderslab.service.DealService;
@@ -23,6 +25,7 @@ public class DesignerController {
     private final CustomDesignerDetailsService customDesignerDetailsService;
     private final CustomCustomerDetailsService customCustomerDetailsService;
     private final DealService dealService;
+    private final AuthorizationService authorizationService;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -67,7 +70,7 @@ public class DesignerController {
      * After new customer is registered and assigned to designer, new deal is being created.
      * Deal is meant to be validated by designer and sent to customer for acceptation.
      *
-     * @param id
+     * @param id : customer ID from url
      * @param model
      * @return
      */
@@ -85,12 +88,36 @@ public class DesignerController {
         model.addAttribute("deal", deal);
         return "designer/create-deal";
     }
-
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
         dealService.save(deal);
         return "/designer/designer-home";
     }
 
+    /**
+     * After new customer is registered and assigned to designer, new authorization is being created.
+     * Authorization is meant to be validated by designer and sent to customer for acceptation.
+     *
+     * @param id : customer Id from url
+     * @param model
+     * @return
+     */
+    @GetMapping(path = "/createauthorization/{customerId}")
+    String createAuthorization(@PathVariable("customerId") Long id, Model model){
+        Customer customer = customCustomerDetailsService.loadCustomerById(id).get();
+        //Tu też pobrać zalogowanego designera
+        Designer designer = customDesignerDetailsService.loadDesignerById(2L);
+        Authorization authorization=new Authorization();
+        authorization.setCreated(LocalDate.now());
+        authorization.setDesigner(designer);
+        authorization.setCustomer(customer);
+        model.addAttribute("authorization", authorization);
+        return "designer/create-authorization";
+    }
+    @PostMapping(path = "/createauthorization/{customerId}")
+    String saveAuthorization(Authorization authorization){
+        authorizationService.save(authorization);
+        return "designer/designer-home";
+    }
 
 }
