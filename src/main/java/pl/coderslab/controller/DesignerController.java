@@ -12,7 +12,6 @@ import pl.coderslab.entity.Designer;
 import pl.coderslab.service.CustomCustomerDetailsService;
 import pl.coderslab.service.CustomDesignerDetailsService;
 import pl.coderslab.service.DealService;
-
 import java.time.LocalDate;
 
 @Controller
@@ -85,12 +84,10 @@ public class DesignerController {
         model.addAttribute("deal", deal);
         return "designer/create-deal";
     }
-
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
         dealService.save(deal);
         return "/designer/designer-home";
     }
-
 
 }
