@@ -1,7 +1,6 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +9,6 @@ import pl.coderslab.entity.Tree;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.TreeService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -72,6 +68,19 @@ public class EventController {
         System.out.println(event);
         eventService.save(event);
         return "redirect:/schema/dependencies";
+    }
+
+    @GetMapping(path = "/test")
+    @ResponseBody
+    String test(){
+        Event event=eventService.findFinal();
+        System.out.println(event);
+
+
+
+        System.out.println(event.getEvents());
+
+        return "test";
     }
 
 

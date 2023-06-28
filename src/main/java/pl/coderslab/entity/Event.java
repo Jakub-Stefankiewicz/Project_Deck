@@ -23,6 +23,7 @@ public class Event {
     private LocalDate expiration;
     private boolean completed;
     private boolean endangered;
+    private boolean finalEvent;
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.ALL})
     private Tree tree;

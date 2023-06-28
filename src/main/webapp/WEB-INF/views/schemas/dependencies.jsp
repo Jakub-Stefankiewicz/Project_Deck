@@ -22,7 +22,13 @@
         <c:forEach items="${events}" var="event">
     <tr>
             <td>${event.eventName}</td>
-            <td><a href="/schema/dependencies/add/${event.id}">Dodaj zależności do eventu</a> </td>
+            <td>
+                <a href="/schema/dependencies/add/${event.id}">Wybierz zależności do eventu</a> <br>
+                <c:if test="${not empty event.events}">
+                Lista eventów koniecznych do wykonania zadania:<br>
+                ${event.events}<br>
+                </c:if>
+            </td>
     </tr>
         </c:forEach>
 </table>

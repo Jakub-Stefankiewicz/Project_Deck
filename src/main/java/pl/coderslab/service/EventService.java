@@ -25,4 +25,6 @@ public class EventService {
     public Event findById(Long id){
         return eventRepository.findById(id).get();
     }
+
+    public Event findFinal(){return eventRepository.findEventByFinalEventIsTrue();}
 }

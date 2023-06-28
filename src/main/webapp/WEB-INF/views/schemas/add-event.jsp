@@ -29,12 +29,12 @@
 </c:if>
 
 <form:form method="post" modelAttribute="event">
-    Event name: <form:input path="eventName"/><br>
-    Event expiration date: <form:input type="date" path="expiration"/><br>
-    Tree name: <form:checkboxes path="tree" items="${treeList}" itemLabel="treeName"/>
+    Nazwa eventu: <form:input path="eventName"/><br>
+    Spodziewana data ukończenia eventu: <form:input type="date" path="expiration"/><br>
+    Nazwa drzewa: <form:checkboxes path="tree" items="${treeList}" itemLabel="treeName"/><br>
+    Czy to event ostateczny: <form:checkbox path="finalEvent"/>
     <input type="submit"/>
 </form:form>
-<a href=""
 </form>
 </body>
 </html>

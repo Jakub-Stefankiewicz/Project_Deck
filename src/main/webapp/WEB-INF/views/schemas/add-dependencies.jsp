@@ -15,7 +15,6 @@
 <body>
 Dodajesz zależności do: <br>
 <c:out value="${event.eventName}"/><br>
-
 <form:form modelAttribute="event" method="post">
     <form:checkboxes path="events" items="${eventsList}" itemLabel="eventName"/>
     <form:hidden path="completed" value="${event.completed}" />
