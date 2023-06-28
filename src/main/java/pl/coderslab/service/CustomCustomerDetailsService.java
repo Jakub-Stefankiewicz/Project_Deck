@@ -47,8 +47,8 @@ public class CustomCustomerDetailsService implements UserDetailsService {
         return customerRepository.findCustomersByDesignerId(id);
     }
 
-    public Optional<Customer> loadCustomerById(Long id) {
-        return customerRepository.findById(id);
+    public Customer loadCustomerById(Long id) {
+        return customerRepository.findById(id).get();
     }
 
 }

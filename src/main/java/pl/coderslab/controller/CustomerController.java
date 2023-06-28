@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.coderslab.entity.Authorization;
 import pl.coderslab.entity.Customer;
 import pl.coderslab.entity.Deal;
 import pl.coderslab.entity.Designer;
+import pl.coderslab.service.AuthorizationService;
 import pl.coderslab.service.CustomCustomerDetailsService;
 import pl.coderslab.service.CustomDesignerDetailsService;
 import pl.coderslab.service.DealService;
@@ -25,6 +27,7 @@ public class CustomerController {
     private final CustomCustomerDetailsService customCustomerDetailsService;
     private final CustomDesignerDetailsService customDesignerDetailsService;
     private final DealService dealService;
+    private final AuthorizationService authorizationService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -54,17 +57,23 @@ public class CustomerController {
     @GetMapping(path = "/deal")
     String deal(Model model) {
         //dać ID zalogowanego customera
-        Deal deal=dealService.getByCustomerId(6L);
-        model.addAttribute("deal", deal);
+        model.addAttribute("deal", dealService.getByCustomerId(1L));
         return "customer/deal";
     }
 
     @GetMapping(path = "/deal/accepted")
     String dealAccepted(){
-        Deal deal=dealService.getByCustomerId(6L);
+        Deal deal=dealService.getByCustomerId(1L);
         deal.setAccepted(true);
         dealService.save(deal);
         return "customer/customer-home";
+    }
+
+    @GetMapping(path = "/authorization")
+    String authorization(Model model) {
+        //dać ID zalogowanego customera
+        model.addAttribute("authorization", authorizationService.findByCustomerId(1L));
+        return "customer/authorization";
     }
 
 }

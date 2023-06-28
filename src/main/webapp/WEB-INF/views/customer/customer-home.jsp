@@ -11,6 +11,10 @@
     <title>Customer home</title>
 </head>
 <body>
-Customer home
+<a href="/customer/deal"> Podgląd umowy</a>
+Pełnomocnictwo
+Drzewo projektu
+Kontakt z projektantem
+Edytuj swoje dane
 </body>
 </html>

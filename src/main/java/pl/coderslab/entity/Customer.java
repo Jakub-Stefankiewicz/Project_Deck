@@ -48,5 +48,11 @@ public class Customer {
     @ManyToOne
     //    @NotEmpty
     private Designer designer;
+    @OneToOne
+    private Project project;
+    @OneToOne
+    private Deal deal;
+    @OneToOne
+    private Authorization authorization;
 
 }
