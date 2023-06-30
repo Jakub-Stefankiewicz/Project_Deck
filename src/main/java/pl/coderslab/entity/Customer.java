@@ -52,7 +52,7 @@ public class Customer {
     private Offer offer;
     @OneToOne
     private Deal deal;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Authorization authorization;
 
 }

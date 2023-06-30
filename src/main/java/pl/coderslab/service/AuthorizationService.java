@@ -12,8 +12,12 @@ public class AuthorizationService {
     @Autowired
     private final AuthorizationRepository authorizationRepository;
 
-    public Authorization findByCustomerId(Long id){
+    public Authorization findByCustomerId(Long id) {
         return authorizationRepository.getAuthorizationsByCustomer_Id(id).get();
+    }
+
+    public void save(Authorization authorization) {
+        authorizationRepository.save(authorization);
     }
 
 }

@@ -14,11 +14,11 @@ public class Authorization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate created;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Designer designer;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Customer customer;
-    @OneToMany
-    private List<Offer> offers;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Offer offer;
     private boolean accepted;
 }

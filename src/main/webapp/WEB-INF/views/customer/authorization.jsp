@@ -22,6 +22,5 @@ Adres zamieszkania: ${authorization.designer.postalCode} ${authorization.designe
 ulica ${authorization.designer.street} numer ${authorization.designer.houseNumber}<br>
 reprezentującym firmę: ${authorization.designer.companyName}<br>
 do wszystkich spraw związnych z wykonaniem projektu: <br>
-
 </body>
 </html>

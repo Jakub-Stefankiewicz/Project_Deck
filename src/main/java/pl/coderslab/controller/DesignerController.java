@@ -6,14 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.entity.Customer;
-import pl.coderslab.entity.Deal;
-import pl.coderslab.entity.Designer;
-import pl.coderslab.entity.Offer;
-import pl.coderslab.service.CustomCustomerDetailsService;
-import pl.coderslab.service.CustomDesignerDetailsService;
-import pl.coderslab.service.DealService;
-import pl.coderslab.service.OfferService;
+import pl.coderslab.entity.*;
+import pl.coderslab.service.*;
 
 import java.time.LocalDate;
 
@@ -26,6 +20,7 @@ public class DesignerController {
     private final CustomCustomerDetailsService customCustomerDetailsService;
     private final DealService dealService;
     private final OfferService offerService;
+    private final AuthorizationService authorizationService;
     private final PasswordEncoder passwordEncoder;
 
     @ModelAttribute("designer")
@@ -59,7 +54,7 @@ public class DesignerController {
     /**
      * Designer homepage.
      *
-     * @param model : model to create attribute.
+     * @param model          : model to create attribute.
      * @param authentication : param to authenticate designer.
      * @return : designer-home.jsp file.
      */
@@ -76,12 +71,12 @@ public class DesignerController {
      * After new customer is registered and assigned to designer, new deal is being created.
      * Deal is meant to be validated by designer and sent to customer for acceptation.
      *
-     * @param id : customer id.
+     * @param id    : customer id.
      * @param model : model to create attribute.
      * @return : create-deal.jsp file.
      */
-    @GetMapping(path = "/createdeal/{customerId}")
-    String createDeal(@PathVariable("customerId") Long id, Model model) {
+    @GetMapping(path = "/createdeal/{id}")
+    String createDeal(@PathVariable("id") Long id, Model model) {
         Deal deal = new Deal();
         deal.setCreated(LocalDate.now());
         deal.setNotes("bez uwag");
@@ -98,7 +93,7 @@ public class DesignerController {
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
         dealService.save(deal);
-        return "/designer/designer-home";
+        return "redirect:/designer/customers";
     }
 
     /**
@@ -108,7 +103,7 @@ public class DesignerController {
      * @return : show-offers.jsp file
      */
     @GetMapping(path = "/offers/list")
-    String showOffers(Model model){
+    String showOffers(Model model) {
         model.addAttribute("offers", offerService.findAllByDesignerId(sessionDesigner().getId()));
         return "designer/show-offers";
     }
@@ -149,7 +144,7 @@ public class DesignerController {
     /**
      * Edit selected offer.
      *
-     * @param id : offer`s id.
+     * @param id    : offer`s id.
      * @param model : model to create attribute.
      * @return edit-offer.jsp file.
      */
@@ -180,7 +175,7 @@ public class DesignerController {
     /**
      * Show customer`s details.
      *
-     * @param id : customer`s id
+     * @param id    : customer`s id
      * @param model : model to create attribute.
      * @return : customer-details.jsp file.
      */
@@ -193,7 +188,7 @@ public class DesignerController {
     /**
      * Add offer to customer.
      *
-     * @param id : customer`s id.
+     * @param id    : customer`s id.
      * @param model : model to create attribute.
      * @return : add-offer-to-customer.jsp file.
      */
@@ -209,6 +204,32 @@ public class DesignerController {
         Customer customerToSave = customCustomerDetailsService.loadCustomerById(customer.getId());
         customerToSave.setOffer(customer.getOffer());
         customCustomerDetailsService.save(customerToSave);
+        return "redirect:/designer/customers";
+    }
+
+    /**
+     *
+     *
+     * @param id : customer`s id.
+     * @param model : model to create attribute.
+     * @return : create-authorization.jsp file.
+     */
+    @GetMapping(path = "/create_authorization/{id}")
+    String createAuthorization(@PathVariable Long id, Model model) {
+        Authorization authorization = new Authorization();
+        authorization.setCreated(LocalDate.now());
+        if (customCustomerDetailsService.loadCustomerById(id).getOffer() != null) {
+            authorization.setOffer(customCustomerDetailsService.loadCustomerById(id).getOffer());
+        }
+        authorization.setDesigner(sessionDesigner());
+        authorization.setCustomer(customCustomerDetailsService.loadCustomerById(id));
+        model.addAttribute("authorization", authorization);
+        return "designer/create-authorization";
+    }
+
+    @PostMapping(path = "/create_authorization/{id}")
+    String saveAuthorization(Authorization authorization) {
+        authorizationService.save(authorization);
         return "redirect:/designer/customers";
     }
 
