@@ -14,31 +14,11 @@
 </head>
 <body>
 
-<c:if test="${not empty offersList}">
-    <table>
-        <tr>
-            <td>Nazwa oferty</td>
-            <td>Kwota oferty</td>
-            <td>Akcja</td>
-        </tr>
-        <c:forEach var="project" items="${offersList}">
-            <tr>
-                <td>${project.projectType}</td>
-                <td>${project.price}</td>
-                <td><a href="/designer/offer/delete/${project.id}">Usuń</a>
-                    <a href="/designer/offer/edit/${project.id}">Edytuj</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
 Dopisz typ projektów
 <form:form method="post" modelAttribute="emptyOffer">
     Typ projektu <form:input path="projectType"/><br>
     Cena projektu <form:input path="price"/><br>
     <input type="submit" value="Add Offer">
 </form:form>
-<a href="/designer/home">Wróć na stronę główną</a>
 </body>
 </html>

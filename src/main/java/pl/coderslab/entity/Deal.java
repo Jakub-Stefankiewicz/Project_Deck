@@ -19,5 +19,7 @@ public class Deal {
     @OneToOne
     private Customer customer;
     private boolean accepted;
+    @OneToOne
+    private Offer offer;
 
 }

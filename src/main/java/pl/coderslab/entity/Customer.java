@@ -48,8 +48,8 @@ public class Customer {
     @ManyToOne
     //    @NotEmpty
     private Designer designer;
-    @OneToOne
-    private Project project;
+    @ManyToOne
+    private Offer offer;
     @OneToOne
     private Deal deal;
     @OneToOne

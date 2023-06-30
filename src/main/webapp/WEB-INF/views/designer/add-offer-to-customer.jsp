@@ -10,12 +10,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Add project to customer</title>
+    <title>Add offer to customer</title>
 </head>
 <body>
-Klinet: <c:out value="${customer.firstName}"/> <c:out value="${customer.lastName}"/> <br>
+Klient: <c:out value="${customer.firstName}"/> <c:out value="${customer.lastName}"/> <br>
 <form:form modelAttribute="customer" method="post">
-  <form:select path="project" items="${projects}" itemLabel="projectType"/>
+  <form:select path="offer" items="${projects}" itemLabel="projectType" itemValue="id"/>
+    <form:hidden path="id" value="${customer.id}"/>
   <input type="submit" value="Dodaj"/>
 </form:form>
 </body>

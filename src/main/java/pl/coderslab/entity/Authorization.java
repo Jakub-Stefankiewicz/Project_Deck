@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "authorization")
@@ -17,5 +18,7 @@ public class Authorization {
     private Designer designer;
     @OneToOne
     private Customer customer;
+    @OneToMany
+    private List<Offer> offers;
     private boolean accepted;
 }

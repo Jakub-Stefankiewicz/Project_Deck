@@ -13,6 +13,7 @@
     <title>Create Deal</title>
 </head>
 <body>
+<c:if test="${null==deal.offer}"> Uwaga: <a href="/designer/customer/add_offer/${deal.customer.id}" >przypisz klientowi rodzaj projektu! Klinkij w link</a></c:if>
 
 <form:form method="post" modelAttribute="deal">
     <div>Umowa</div>
@@ -26,13 +27,16 @@
     ulica ${deal.customer.street} numer ${deal.customer.houseNumber}<br>
     reprezentującym firmę: ${deal.designer.companyName}<br>
     zwanym dalej Wykonawcą. <br>
-    Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt XXXXXX za kwotę <form:input path="value"/><br>
+    Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt:<br>
+    ${deal.offer.projectType}<br>
+    za kwotę: ${deal.offer.price} zł<br>
     Termin wykonania wynosi 3 miesiące od dnia podpinaia umowy.<br>
     Dodatkowe ustalenia: <form:input path="notes"/><br>
     <form:hidden path="customer"/>
     <form:hidden path="designer"/>
     <input type="submit" name="Prześlij do klienta">
 </form:form>
+
 
 </body>
 </html>

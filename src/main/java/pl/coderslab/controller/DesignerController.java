@@ -1,9 +1,7 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Customer;
 import pl.coderslab.entity.Deal;
 import pl.coderslab.entity.Designer;
-import pl.coderslab.entity.Project;
+import pl.coderslab.entity.Offer;
 import pl.coderslab.service.CustomCustomerDetailsService;
 import pl.coderslab.service.CustomDesignerDetailsService;
 import pl.coderslab.service.DealService;
-import pl.coderslab.service.ProjectService;
+import pl.coderslab.service.OfferService;
 
 import java.time.LocalDate;
 
@@ -27,11 +25,11 @@ public class DesignerController {
     private final CustomDesignerDetailsService customDesignerDetailsService;
     private final CustomCustomerDetailsService customCustomerDetailsService;
     private final DealService dealService;
-    private final ProjectService projectService;
+    private final OfferService offerService;
     private final PasswordEncoder passwordEncoder;
 
     @ModelAttribute("designer")
-    public Designer sessionDesigner(){
+    public Designer sessionDesigner() {
         //dodać pobieranego po ID
         return customDesignerDetailsService.loadDesignerById(1L);
     }
@@ -39,8 +37,8 @@ public class DesignerController {
     /**
      * Adds new designer.
      *
-     * @param model
-     * @return
+     * @param model : model to create attribute.
+     * @return : register.jsp file
      */
     @GetMapping(path = "/add")
     String add(Model model) {
@@ -61,9 +59,9 @@ public class DesignerController {
     /**
      * Designer homepage.
      *
-     * @param model
-     * @param authentication
-     * @return
+     * @param model : model to create attribute.
+     * @param authentication : param to authenticate designer.
+     * @return : designer-home.jsp file.
      */
     @GetMapping(path = "/home")
     String home(Model model, Authentication authentication) {
@@ -78,82 +76,141 @@ public class DesignerController {
      * After new customer is registered and assigned to designer, new deal is being created.
      * Deal is meant to be validated by designer and sent to customer for acceptation.
      *
-     * @param id
-     * @param model
-     * @return
+     * @param id : customer id.
+     * @param model : model to create attribute.
+     * @return : create-deal.jsp file.
      */
     @GetMapping(path = "/createdeal/{customerId}")
     String createDeal(@PathVariable("customerId") Long id, Model model) {
-        Customer customer = customCustomerDetailsService.loadCustomerById(id);
         Deal deal = new Deal();
         deal.setCreated(LocalDate.now());
-        deal.setValue(0.00);
         deal.setNotes("bez uwag");
         deal.setDesigner(sessionDesigner());
-        deal.setCustomer(customer);
+        deal.setCustomer(customCustomerDetailsService.loadCustomerById(id));
+        if (customCustomerDetailsService.loadCustomerById(id).getOffer() != null) {
+            deal.setOffer(customCustomerDetailsService.loadCustomerById(id).getOffer());
+            deal.setValue(customCustomerDetailsService.loadCustomerById(id).getOffer().getPrice());
+        }
         model.addAttribute("deal", deal);
         return "designer/create-deal";
     }
+
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
         dealService.save(deal);
         return "/designer/designer-home";
     }
 
-    @GetMapping(path = "/offer/add")
-    String addOffer(Model model) {
-        model.addAttribute("emptyOffer", new Project());
-        model.addAttribute("offersList", projectService.findAllByDesignerId(sessionDesigner().getId()));
-        return "designer/add-offer";
-    }
-    @PostMapping(path = "/offer/add")
-    String saveOffer(Project project){
-        project.setDesigner(sessionDesigner());
-        projectService.save(project);
-        return "redirect:/designer/offer/add";
-    }
-    @GetMapping(path = "/offer/delete/{id}")
-    String deleteOffer(@PathVariable("id")Long id){
-        projectService.delete(projectService.findById(id));
-        return "redirect:/designer/offer/add";
-    }
-    @GetMapping(path = "/offer/edit/{id}")
-    String editOffer(@PathVariable("id")Long id, Model model){
-        model.addAttribute("offerToEdit", projectService.findById(id));
-        return "designer/edit-offer";
-    }
-    @PostMapping(path = "/offer/edit/{id}")
-    String saveEdited(Project project){
-        projectService.save(project);
-        return "redirect:/designer/offer/add";
+    /**
+     * Show offers list.
+     *
+     * @param model : model to create attribute.
+     * @return : show-offers.jsp file
+     */
+    @GetMapping(path = "/offers/list")
+    String showOffers(Model model){
+        model.addAttribute("offers", offerService.findAllByDesignerId(sessionDesigner().getId()));
+        return "designer/show-offers";
     }
 
+
+    /**
+     * Create new offer.
+     *
+     * @param model : model to create attribute.
+     * @return add-offer.jsp file.
+     */
+    @GetMapping(path = "/offer/add")
+    String addOffer(Model model) {
+        model.addAttribute("emptyOffer", new Offer());
+        model.addAttribute("offersList", offerService.findAllByDesignerId(sessionDesigner().getId()));
+        return "designer/add-offer";
+    }
+
+    @PostMapping(path = "/offer/add")
+    String saveOffer(Offer offer) {
+        offer.setDesigner(sessionDesigner());
+        offerService.save(offer);
+        return "redirect:/designer/offers/list";
+    }
+
+    /**
+     * Delete selected offer.
+     *
+     * @param id : offer`s id to delete.
+     * @return : redirect to offers list.
+     */
+    @GetMapping(path = "/offer/delete/{id}")
+    String deleteOffer(@PathVariable("id") Long id) {
+        offerService.delete(offerService.findById(id));
+        return "redirect:/designer/offers/list";
+    }
+
+    /**
+     * Edit selected offer.
+     *
+     * @param id : offer`s id.
+     * @param model : model to create attribute.
+     * @return edit-offer.jsp file.
+     */
+    @GetMapping(path = "/offer/edit/{id}")
+    String editOffer(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("offerToEdit", offerService.findById(id));
+        return "designer/edit-offer";
+    }
+
+    @PostMapping(path = "/offer/edit/{id}")
+    String saveEdited(Offer offer) {
+        offerService.save(offer);
+        return "redirect:/designer/offers/list";
+    }
+
+    /**
+     * Show customers list
+     *
+     * @param model : model to create attribute.
+     * @return customers.jsp fiel.
+     */
     @GetMapping(path = "/customers")
-    String customers(Model model){
+    String customers(Model model) {
         model.addAttribute("designerCustomers", customCustomerDetailsService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
         return "designer/customers";
     }
 
+    /**
+     * Show customer`s details.
+     *
+     * @param id : customer`s id
+     * @param model : model to create attribute.
+     * @return : customer-details.jsp file.
+     */
     @GetMapping(path = "/customer_details/{id}")
-    String customerDetails(@PathVariable("id")Long id, Model model){
+    String customerDetails(@PathVariable("id") Long id, Model model) {
         model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
         return "designer/customer-details";
     }
 
-    @GetMapping(path = "/customer/add_project/{id}")
-    String addProjectToCustomer(@PathVariable Long id, Model model){
+    /**
+     * Add offer to customer.
+     *
+     * @param id : customer`s id.
+     * @param model : model to create attribute.
+     * @return : add-offer-to-customer.jsp file.
+     */
+    @GetMapping(path = "/customer/add_offer/{id}")
+    String addOfferToCustomer(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
-        model.addAttribute("projects", projectService.findAllByDesignerId(sessionDesigner().getId()));
-        return "designer/add-project-to-customer";
+        model.addAttribute("projects", offerService.findAllByDesignerId(sessionDesigner().getId()));
+        return "designer/add-offer-to-customer";
     }
-//    @PostMapping(path = "/customer/add_project/{id}")
-//    String saveProjectToCustomer(Customer customer){
-//        Customer customer=
-//        customCustomerDetailsService.save();
-//        customer.getProject();
-//        return "designer/add-project-to-customer";
-//    }
 
+    @PostMapping(path = "/customer/add_offer/{id}")
+    String saveProjectToCustomer(Customer customer) {
+        Customer customerToSave = customCustomerDetailsService.loadCustomerById(customer.getId());
+        customerToSave.setOffer(customer.getOffer());
+        customCustomerDetailsService.save(customerToSave);
+        return "redirect:/designer/customers";
+    }
 
 
 }
