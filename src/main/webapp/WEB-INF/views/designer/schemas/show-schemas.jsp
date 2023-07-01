@@ -52,7 +52,9 @@ Lista dostępnych zależności
             </c:forEach></td>
             <td><a href="/schema/event/edit/${event.id}">Edytuj</a>,<br>
                 <a href="/schema/dependencies/add/${event.id}">Przypisz zależności do spełnienia</a>,<br>
-                <a href="/schema/event/delete/${event.id}">Usuń</a></td>
+                <c:if test="${not empty event.events}">Aby usunąć event, najpierw usuń zależności</c:if>
+                <c:if test="${empty event.events}"><a href="/schema/event/delete/${event.id}"
+                                                      onclick="return confirm('Are you sure?')">Usuń</a></c:if> </td>
         </tr>
     </c:forEach>
 </table>

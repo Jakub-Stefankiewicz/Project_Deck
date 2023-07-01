@@ -21,7 +21,6 @@ Edytujesz event ${eventToEdit.eventName}: <br>
     <form:hidden path="events"/>
     <form:hidden path="endangered"/>
     <form:hidden path="completed"/>
-    <form:hidden path="trees"/>
     <input type="submit" value="Zatwierdź zmiany">
 </form:form>
 </body>

@@ -18,6 +18,9 @@ Dodajesz zależności do: <br>
 <form:form modelAttribute="offer" method="post">
     <form:checkboxes path="events" items="${events}" itemLabel="eventName"/>
     <form:hidden path="id" />
+    <form:hidden path="projectType"/>
+    <form:hidden path="price"/>
+    <form:hidden path="designer"/>
     <input type="submit"/>
 </form:form>
 </body>

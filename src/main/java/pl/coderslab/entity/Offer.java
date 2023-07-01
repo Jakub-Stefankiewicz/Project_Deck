@@ -18,14 +18,10 @@ public class Offer {
     private Long id;
     private String projectType;
     private double price;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Designer designer;
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<Customer> customer;
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<Deal> deals;
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<Authorization> authorizations;
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Event> events;
+    @ManyToOne
+    private Offer offer;
 }

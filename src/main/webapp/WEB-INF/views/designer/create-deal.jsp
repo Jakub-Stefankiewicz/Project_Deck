@@ -28,8 +28,8 @@
     reprezentującym firmę: <form:input path="designer.companyName"/><br>
     zwanym dalej Wykonawcą. <br>
     Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt:<br>
-    ${deal.offer.projectType}<br>
-    za kwotę: ${deal.offer.price} zł<br>
+    <form:input path="offer.projectType"/><br>
+    za kwotę <form:input path="offer.price"/> zł<br>
     Termin wykonania wynosi 3 miesiące od dnia podpinaia umowy.<br>
     Dodatkowe ustalenia: <form:input path="notes"/><br>
     <form:hidden path="customer"/>

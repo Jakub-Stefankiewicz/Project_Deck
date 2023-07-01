@@ -22,7 +22,8 @@
         <tr>
             <td>${offer.projectType}</td>
             <td>${offer.price}</td>
-            <td><a href="/designer/offer/edit/${offer.id}"> Edytuj ofertę</a>  <a href="/designer/offer/delete/${offer.id}">Usuń ofertę</a> </td>
+            <td><a href="/designer/offer/edit/${offer.id}"> Edytuj ofertę</a>  <a href="/designer/offer/delete/${offer.id}"
+                                                                                  onclick="return confirm('Are you sure?')">Usuń ofertę</a> </td>
         </tr>
     </c:forEach>
 </table>

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,9 +25,6 @@ public class Event {
     private boolean completed;
     private boolean endangered;
     private boolean finalEvent;
-    @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private List<Offer> offers;
     @ToString.Exclude
     @ManyToMany
     private List<Event> events;

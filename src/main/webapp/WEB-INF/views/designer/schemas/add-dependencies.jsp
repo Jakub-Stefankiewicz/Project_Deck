@@ -21,7 +21,6 @@ Dodajesz zależności do: <br>
     <form:hidden path="endangered" />
     <form:hidden path="eventName" />
     <form:hidden path="expiration"/>
-    <form:hidden path="trees"/>
     <form:hidden path="id"/>
     <input type="submit"/>
 </form:form>

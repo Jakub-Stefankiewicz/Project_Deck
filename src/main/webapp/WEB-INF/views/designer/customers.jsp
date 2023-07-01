@@ -33,10 +33,12 @@ Lista aktywnych klientów
     </c:forEach>
 </table>
 <a href="/designer/home">Wróć na stronę główną</a><br>
-<form action="/designer/invitation" method="post">
+
+<form action="/designer/customers" method="post">
     <label for="email">Email:</label>
     Wpisz email klienta do wysłania zaproszenia<input type="text" id="email" name="email"/><br>
     <input type="submit" value="Wyślij"/>
 </form>
+
 </body>
 </html>

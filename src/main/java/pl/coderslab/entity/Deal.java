@@ -14,7 +14,7 @@ public class Deal {
     private LocalDate created;
     private double value;
     private String notes;
-    @OneToOne
+    @ManyToOne
     private Designer designer;
     @OneToOne
     private Customer customer;
