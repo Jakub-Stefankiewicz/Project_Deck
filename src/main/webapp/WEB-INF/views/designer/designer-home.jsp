@@ -12,9 +12,12 @@
     <title>Designer Home</title>
 </head>
 <body>
-<c:forEach var="customer" items="${designerCustomers}">
-${customer.id}<br>
-</c:forEach>
-designer homepage
+Menu:<br>
+<a href="/designer/offers/list">Rodzaje oferowanych projektów</a><br>
+<a href="/designer/customers">Aktywni klienci</a><br>
+Aktywne projekty<br>
+Dokumenty<br>
+Archiwum<br>
+Schematy projektów<br>
 </body>
 </html>

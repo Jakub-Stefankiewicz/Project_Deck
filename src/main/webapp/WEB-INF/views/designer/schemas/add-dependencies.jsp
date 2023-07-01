@@ -17,11 +17,12 @@ Dodajesz zależności do: <br>
 <c:out value="${event.eventName}"/><br>
 <form:form modelAttribute="event" method="post">
     <form:checkboxes path="events" items="${eventsList}" itemLabel="eventName"/>
-    <form:hidden path="completed" value="${event.completed}" />
-    <form:hidden path="endangered" value="${event.endangered}" />
-    <form:hidden path="eventName" value="${event.eventName}" />
-    <form:hidden path="expiration" value="${event.expiration}" />
-    <form:hidden path="tree" value="${event.tree.id}" />
+    <form:hidden path="completed" />
+    <form:hidden path="endangered" />
+    <form:hidden path="eventName" />
+    <form:hidden path="expiration"/>
+    <form:hidden path="trees"/>
+    <form:hidden path="id"/>
     <input type="submit"/>
 </form:form>
 

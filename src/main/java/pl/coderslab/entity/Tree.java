@@ -13,6 +13,6 @@ public class Tree {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String treeName;
-    @OneToMany(mappedBy = "tree")
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Event> events;
 }

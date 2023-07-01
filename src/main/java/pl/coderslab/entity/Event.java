@@ -25,8 +25,8 @@ public class Event {
     private boolean endangered;
     private boolean finalEvent;
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private Tree tree;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private List<Tree> trees;
     @ToString.Exclude
     @ManyToMany
     private List<Event> events;

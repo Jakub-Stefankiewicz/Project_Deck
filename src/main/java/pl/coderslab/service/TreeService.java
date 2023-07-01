@@ -14,11 +14,20 @@ public class TreeService {
     @Autowired
     private TreeRepository treeRepository;
 
-    public void save(Tree tree){
+    public void save(Tree tree) {
         treeRepository.save(tree);
     }
-    public List<Tree> findAll(){
+
+    public List<Tree> findAll() {
         return treeRepository.findAll();
+    }
+
+    public Tree findById(Long id) {
+        return treeRepository.findById(id).get();
+    }
+
+    public void delete(Tree tree){
+        treeRepository.delete(tree);
     }
 
 }

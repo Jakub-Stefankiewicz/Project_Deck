@@ -27,4 +27,8 @@ public class EventService {
     }
 
     public Event findFinal(){return eventRepository.findEventByFinalEventIsTrue();}
+
+    public void delete(Event event){
+        eventRepository.delete(event);
+    }
 }

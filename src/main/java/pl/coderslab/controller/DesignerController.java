@@ -105,7 +105,7 @@ public class DesignerController {
     @GetMapping(path = "/offers/list")
     String showOffers(Model model) {
         model.addAttribute("offers", offerService.findAllByDesignerId(sessionDesigner().getId()));
-        return "designer/show-offers";
+        return "designer/offer/show-offers";
     }
 
 
@@ -119,7 +119,7 @@ public class DesignerController {
     String addOffer(Model model) {
         model.addAttribute("emptyOffer", new Offer());
         model.addAttribute("offersList", offerService.findAllByDesignerId(sessionDesigner().getId()));
-        return "designer/add-offer";
+        return "designer/offer/add-offer";
     }
 
     @PostMapping(path = "/offer/add")
@@ -151,7 +151,7 @@ public class DesignerController {
     @GetMapping(path = "/offer/edit/{id}")
     String editOffer(@PathVariable("id") Long id, Model model) {
         model.addAttribute("offerToEdit", offerService.findById(id));
-        return "designer/edit-offer";
+        return "designer/offer/edit-offer";
     }
 
     @PostMapping(path = "/offer/edit/{id}")
@@ -196,7 +196,7 @@ public class DesignerController {
     String addOfferToCustomer(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
         model.addAttribute("projects", offerService.findAllByDesignerId(sessionDesigner().getId()));
-        return "designer/add-offer-to-customer";
+        return "designer/offer/add-offer-to-customer";
     }
 
     @PostMapping(path = "/customer/add_offer/{id}")
