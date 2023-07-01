@@ -208,9 +208,7 @@ public class DesignerController {
     }
 
     /**
-     *
-     *
-     * @param id : customer`s id.
+     * @param id    : customer`s id.
      * @param model : model to create attribute.
      * @return : create-authorization.jsp file.
      */
@@ -233,5 +231,22 @@ public class DesignerController {
         return "redirect:/designer/customers";
     }
 
+    /**
+     * Show archived clients and projects
+     *
+     * @param model : model to add attribute
+     * @return : archives.jsp file
+     */
+    @GetMapping(path = "/archives")
+    String showArchives(Model model) {
+        model.addAttribute("designerCustomers", customCustomerDetailsService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
+        return "designer/archives";
+    }
+
+    @PostMapping(path = "/invitation")
+    String sendEmail(@ModelAttribute("email") String email){
+        System.out.println(email);
+        return "redirect:/designer/customers";
+    }
 
 }

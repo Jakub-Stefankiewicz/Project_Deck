@@ -25,7 +25,8 @@
             <td><a href="/designer/offer/edit/${offer.id}"> Edytuj ofertę</a>  <a href="/designer/offer/delete/${offer.id}">Usuń ofertę</a> </td>
         </tr>
     </c:forEach>
-<a href="/designer/offer/add">Dodaj nową ofertę do listy</a>
 </table>
+<a href="/designer/offer/add">Dodaj nową ofertę do listy</a><br>
+<a href="/designer/home">Wróć na stronę główną</a>
 </body>
 </html>

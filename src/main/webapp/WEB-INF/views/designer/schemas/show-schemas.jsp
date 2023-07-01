@@ -13,7 +13,7 @@
     <title>Show schemas</title>
 </head>
 <body>
-Schematy:
+Schematy ofert:
 
 <table>
     <tr>
@@ -21,25 +21,21 @@ Schematy:
         <td>Przypisane zależności</td>
         <td>Akcja</td>
     </tr>
-    <c:forEach items="${trees}" var="tree">
+    <c:forEach items="${offers}" var="offer">
         <tr>
-            <td>${tree.treeName}</td>
+            <td>${offer.projectType}</td>
             <td>
-                <c:forEach var="event" items="${tree.events}">
+                <c:forEach var="event" items="${offer.events}">
                     ${event.eventName}<br>
                 </c:forEach>
             </td>
-            <td><a href="/schema/tree/edit/${tree.id}">Edytuj</a>,
-                <a href="/schema/tree/add_events/${tree.id}">Przypisz/usuń zależność</a>,
-                <a href="/schema/tree/delete/${tree.id}">Usuń</a></td>
+            <td>
+                <a href="/schema/offer/add_events/${offer.id}">Przypisz/usuń zależność</a>,
+            </td>
         </tr>
     </c:forEach>
 </table>
-<c:if test="${empty trees}">Lista schematów jest pusta- dodaj nowy schemat.</c:if><br>
-<form:form modelAttribute="tree" method="post">
-    Nazwa nowego drzewa:<form:input path="treeName"/><br>
-    <input type="submit" value="Zatwierdź">
-</form:form>
+<c:if test="${empty offers}">Lista ofert jest pusta- dodaj nową ofertę.</c:if><br>
 <br><br>
 Lista dostępnych zależności
 <table>
@@ -66,6 +62,7 @@ Lista dostępnych zależności
     Spodziewana data ukończenia eventu: <form:input type="date" path="expiration"/><br>
     Czy to event ostateczny: <form:checkbox path="finalEvent"/>
     <input type="submit"/>
-</form:form>
+</form:form><br>
+<a href="/designer/home">Wróć na stronę główną</a>
 </body>
 </html>

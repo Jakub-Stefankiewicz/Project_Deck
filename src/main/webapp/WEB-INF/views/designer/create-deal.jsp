@@ -18,14 +18,14 @@
 <form:form method="post" modelAttribute="deal">
     <div>Umowa</div>
     Umowa sporządzona dnia <form:input path="created"/> pomiędzy:<br>
-    Imię i naziwsko: ${deal.customer.firstName} ${deal.customer.lastName} <br>
-    Adres zamieszkania: ${deal.customer.postalCode} ${deal.customer.city},
-        ulica ${deal.customer.street} numer ${deal.customer.houseNumber}<br>
+    Imię i naziwsko: <form:input path="customer.firstName"/> <form:input path="customer.lastName"/><br>
+    Adres zamieszkania: <form:input path="customer.postalCode"/>, <form:input path="customer.city"/><br>
+    ulica <form:input path="customer.street"/> numer <form:input path="customer.houseNumber"/><br>
     zwanym dalej Zamawiającym, a: <br>
-    Imię i naziwsko: ${deal.customer.firstName} ${deal.customer.lastName} <br>
-    Adres zamieszkania: ${deal.customer.postalCode} ${deal.customer.city},
-    ulica ${deal.customer.street} numer ${deal.customer.houseNumber}<br>
-    reprezentującym firmę: ${deal.designer.companyName}<br>
+    Imię i naziwsko: <form:input path="designer.firstName"/> <form:input path="designer.lastName"/> <br>
+    Adres zamieszkania: <form:input path="designer.postalCode"/>, <form:input path="designer.city"/><br>
+    ulica <form:input path="designer.street"/> numer <form:input path="designer.houseNumber"/><br>
+    reprezentującym firmę: <form:input path="designer.companyName"/><br>
     zwanym dalej Wykonawcą. <br>
     Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt:<br>
     ${deal.offer.projectType}<br>

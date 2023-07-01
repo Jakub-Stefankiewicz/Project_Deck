@@ -14,8 +14,8 @@
 </head>
 <body>
 Dodajesz zależności do: <br>
-<c:out value="${tree.treeName}"/><br>
-<form:form modelAttribute="tree" method="post">
+<c:out value="${offer.projectType}"/><br>
+<form:form modelAttribute="offer" method="post">
     <form:checkboxes path="events" items="${events}" itemLabel="eventName"/>
     <form:hidden path="id" />
     <input type="submit"/>

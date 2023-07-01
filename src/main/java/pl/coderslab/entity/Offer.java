@@ -26,4 +26,6 @@ public class Offer {
     private List<Deal> deals;
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Authorization> authorizations;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private List<Event> events;
 }

@@ -14,10 +14,8 @@
 <body>
 Menu:<br>
 <a href="/designer/offers/list">Rodzaje oferowanych projektów</a><br>
-<a href="/designer/customers">Aktywni klienci</a><br>
-Aktywne projekty<br>
-Dokumenty<br>
-Archiwum<br>
-Schematy projektów<br>
+<a href="/designer/customers">Aktywni klienci i projekty</a><br>
+<a href="/designer/archives">Archiwum klientów i projektów</a><br>
+<a href="/schema/list">Schematy projektów</a>
 </body>
 </html>

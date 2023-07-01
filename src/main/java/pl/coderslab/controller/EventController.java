@@ -1,14 +1,13 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.Event;
-import pl.coderslab.entity.Tree;
+import pl.coderslab.entity.Offer;
 import pl.coderslab.service.EventService;
-import pl.coderslab.service.TreeService;
+import pl.coderslab.service.OfferService;
 
 import java.util.List;
 
@@ -17,28 +16,24 @@ import java.util.List;
 @RequestMapping(path = "/schema")
 public class EventController {
     private final EventService eventService;
-    private final TreeService treeService;
+    private final OfferService offerService;
 
     /**
-     * Show schemas: trees and events. Add, edit, delete tree and event.
+     * Show schemas: offer and events. Add, edit, delete event.
      *
      * @param model : model to create attribute.
      * @return show-schemas.jsp file with all list options.
      */
     @GetMapping(path = "/list")
     String showSchemas(Model model) {
-        model.addAttribute("tree", new Tree());
-        model.addAttribute("trees", treeService.findAll());
+        model.addAttribute("offers", offerService.findAll());
         model.addAttribute("event", new Event());
         model.addAttribute("events", eventService.findAll());
         return "designer/schemas/show-schemas";
     }
 
     @PostMapping(path = "/list")
-    String saveTree(Tree tree, Event event) {
-        if (tree.getTreeName() != null) {
-            treeService.save(tree);
-        }
+    String saveTree(Event event) {
         if (event.getEventName() != null) {
             eventService.save(event);
         }
@@ -46,53 +41,22 @@ public class EventController {
     }
 
     /**
-     * Add selected events to tree.
+     * Add selected events to offer.
      *
-     * @param id  tree`s id.
+     * @param id  offer`s id.
      * @param model : model to create attribute.
-     * @return tree-add-event.jsp file with events to select.
+     * @return offer-add-event.jsp file with events to select.
      */
-    @GetMapping(path = "/tree/add_events/{id}")
-    String addEventsToTree(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("tree", treeService.findById(id));
+    @GetMapping(path = "/offer/add_events/{id}")
+    String addEventsToOffer(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("offer", offerService.findById(id));
         model.addAttribute("events", eventService.findAll());
-        return "designer/schemas/tree-add-event";
+        return "designer/schemas/offer-add-event";
     }
 
-    @PostMapping(path = "/tree/add_events/{id}")
-    String saveEventsOnTree(Tree tree) {
-        treeService.save(tree);
-        return "redirect:/schema/list";
-    }
-
-    /**
-     * Edit selected tree.
-     *
-     * @param id : tree`s id.
-     * @param model : model to create attribute.
-     * @return edit-tree.jsp file with inputs to edit.
-     */
-    @GetMapping(path = "/tree/edit/{id}")
-    String editTree(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("treeToEdit", treeService.findById(id));
-        return "designer/schemas/edit-tree";
-    }
-
-    @PostMapping(path = "/tree/edit/{id}")
-    String saveEditedTree(Tree tree) {
-        treeService.save(tree);
-        return "redirect:/schema/list";
-    }
-
-    /**
-     * Delete selected tree.
-     *
-     * @param id : tree`s id.
-     * @return : redirect to schema list.
-     */
-    @GetMapping(path = "/tree/delete/{id}")
-    String deleteTree(@PathVariable("id") Long id) {
-        treeService.delete(treeService.findById(id));
+    @PostMapping(path = "/offer/add_events/{id}")
+    String saveEventsOnOffer(Offer offer) {
+        offerService.save(offer);
         return "redirect:/schema/list";
     }
 
@@ -137,7 +101,9 @@ public class EventController {
     @GetMapping(path = "/dependencies/add/{id}")
     String addDependencies(@PathVariable("id") Long id, Model model) {
         model.addAttribute("event", eventService.findById(id));
-        model.addAttribute("eventsList", eventService.findAll());
+        List<Event> eventList=eventService.findAll();
+        eventList.remove(eventService.findById(id));
+        model.addAttribute("eventsList", eventList);
         return "designer/schemas/add-dependencies";
     }
 

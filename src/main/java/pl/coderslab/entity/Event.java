@@ -26,7 +26,7 @@ public class Event {
     private boolean finalEvent;
     @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private List<Tree> trees;
+    private List<Offer> offers;
     @ToString.Exclude
     @ManyToMany
     private List<Event> events;

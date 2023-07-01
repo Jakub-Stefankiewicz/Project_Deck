@@ -32,5 +32,11 @@ Lista aktywnych klientów
         </c:if>
     </c:forEach>
 </table>
+<a href="/designer/home">Wróć na stronę główną</a><br>
+<form action="/designer/invitation" method="post">
+    <label for="email">Email:</label>
+    Wpisz email klienta do wysłania zaproszenia<input type="text" id="email" name="email"/><br>
+    <input type="submit" value="Wyślij"/>
+</form>
 </body>
 </html>
