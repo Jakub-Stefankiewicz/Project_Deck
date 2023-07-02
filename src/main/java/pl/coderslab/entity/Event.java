@@ -1,6 +1,7 @@
 package pl.coderslab.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,4 +29,5 @@ public class Event {
     @ToString.Exclude
     @ManyToMany
     private List<Event> events;
+
 }

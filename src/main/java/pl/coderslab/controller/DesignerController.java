@@ -244,7 +244,7 @@ public class DesignerController {
     }
 
     @PostMapping(path = "/customers")
-    String sendEmail(@ModelAttribute("email") String email){
+    String sendEmail(@RequestParam("email") String email){
         System.out.println(email);
         return "redirect:/designer/customers";
     }

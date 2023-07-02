@@ -3,6 +3,7 @@ package pl.coderslab.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.OfferRepository;
 
@@ -31,5 +32,8 @@ public class OfferService {
     }
     public Offer findById(Long id){
         return offerRepository.findById(id).get();
+    }
+    public List<Offer> findByEvent(Event event){
+        return offerRepository.findAllByEvents(event);
     }
 }

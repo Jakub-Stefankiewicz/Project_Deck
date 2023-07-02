@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <html>
 <head>
     <title>Customers</title>
@@ -37,6 +38,7 @@ Lista aktywnych klientów
 <form action="/designer/customers" method="post">
     <label for="email">Email:</label>
     Wpisz email klienta do wysłania zaproszenia<input type="text" id="email" name="email"/><br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="submit" value="Wyślij"/>
 </form>
 

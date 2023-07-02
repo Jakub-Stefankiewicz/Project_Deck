@@ -1,5 +1,8 @@
 package pl.coderslab.security;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.hibernate.Session;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -24,6 +27,5 @@ public class MvcConfig implements WebMvcConfigurer {
     public EventConverter getEventConverter(){
         return new EventConverter();
     }
-
 
 }

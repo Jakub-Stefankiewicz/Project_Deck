@@ -1,6 +1,8 @@
 package pl.coderslab.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.collection.spi.PersistentBag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import pl.coderslab.entity.Offer;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.OfferService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -81,13 +84,30 @@ public class EventController {
 
     /**
      * Delete selected event.
+     * Get event name to be deleted. Than, clear event from event list matched
+     * to offers and events. When event is removed from lists, remove it.
      *
      * @param id : event`s id.
      * @return : redirect to schema list.
      */
     @GetMapping(path = "/event/delete/{id}")
     String deleteEvent(@PathVariable("id") Long id) {
-        eventService.delete(eventService.findById(id));
+        Event eventToDelete=eventService.findById(id);
+        List<Event> eventsToClear=eventService.findByEvents(eventToDelete);
+        if(eventsToClear!=null){
+            for (Event event : eventsToClear) {
+                event.getEvents().remove(eventToDelete);
+                eventService.save(event);
+            }
+        }
+        List<Offer> offersToClear=offerService.findByEvent(eventToDelete);
+        if(offersToClear!=null){
+            for (Offer offer : offersToClear) {
+                offer.getEvents().remove(eventToDelete);
+                offerService.save(offer);
+            }
+        }
+        eventService.delete(eventToDelete);
         return "redirect:/schema/list";
     }
 
@@ -111,6 +131,12 @@ public class EventController {
     String saveDependencies(Event event) {
         eventService.save(event);
         return "redirect:/schema/list";
+    }
+
+    @GetMapping(path = "/tree/{id}")
+    String showTree(@PathVariable Long id, Model model){
+        model.addAttribute("event", eventService.findFinal());
+        return "designer/schemas/show-tree";
     }
 
 }
