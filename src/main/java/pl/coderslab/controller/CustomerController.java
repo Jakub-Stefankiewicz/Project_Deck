@@ -1,6 +1,7 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.collection.spi.PersistentBag;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,16 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.entity.Authorization;
-import pl.coderslab.entity.Customer;
-import pl.coderslab.entity.Deal;
-import pl.coderslab.entity.Designer;
-import pl.coderslab.service.AuthorizationService;
-import pl.coderslab.service.CustomCustomerDetailsService;
-import pl.coderslab.service.CustomDesignerDetailsService;
-import pl.coderslab.service.DealService;
+import pl.coderslab.entity.*;
+import pl.coderslab.service.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +26,8 @@ public class CustomerController {
     private final CustomDesignerDetailsService customDesignerDetailsService;
     private final DealService dealService;
     private final AuthorizationService authorizationService;
+    private final EventService eventService;
+    private final OfferService offerService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -74,6 +74,12 @@ public class CustomerController {
         //dać ID zalogowanego customera
         model.addAttribute("authorization", authorizationService.findByCustomerId(1L));
         return "customer/authorization";
+    }
+
+    @GetMapping(path = "/tree")
+    String showTree(Model model){
+        model.addAttribute("event", eventService.findFinalAndByOffer(offerService.findByCustomer(customCustomerDetailsService.loadCustomerById(1L))));
+        return "customer/show-tree";
     }
 
 }

@@ -22,6 +22,7 @@ Schematy ofert:
         <td>Akcja</td>
     </tr>
     <c:forEach items="${offers}" var="offer">
+        <c:if test="${true==offer.template}">
         <tr>
             <td>${offer.projectType}</td>
             <td>
@@ -35,9 +36,11 @@ Schematy ofert:
                 <a href="/schema/offer/add_events/${offer.id}">Przypisz/usuń zależność</a>,
             </td>
         </tr>
+        </c:if>
     </c:forEach>
 </table>
 <c:if test="${empty offers}">Lista ofert jest pusta- dodaj nową ofertę.</c:if><br>
+
 <br><br>
 <a href="/designer/home">Wróć na stronę główną</a>
 </body>

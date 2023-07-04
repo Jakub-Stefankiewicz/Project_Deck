@@ -15,9 +15,23 @@
 <body>
 Klient: <c:out value="${customer.firstName}"/> <c:out value="${customer.lastName}"/> <br>
 <form:form modelAttribute="customer" method="post">
-  <form:select path="offer" items="${projects}" itemLabel="projectType" itemValue="id"/>
+    <form:select path="offer" items="${projects}" itemLabel="projectType" itemValue="id"/>
     <form:hidden path="id" value="${customer.id}"/>
-  <input type="submit" value="Dodaj"/>
+    <form:hidden path="designer"/>
+    <form:hidden path="active"/>
+    <form:hidden path="houseNumber"/>
+    <form:hidden path="street"/>
+    <form:hidden path="city"/>
+    <form:hidden path="postalCode"/>
+    <form:hidden path="firstName"/>
+    <form:hidden path="lastName"/>
+    <form:hidden path="email"/>
+    <form:hidden path="added"/>
+    <form:hidden path="authorization"/>
+    <form:hidden path="deal"/>
+    <form:hidden path="phone"/>
+    <form:hidden path="username"/>
+    <input type="submit" value="Dodaj"/>
 </form:form>
 </body>
 </html>

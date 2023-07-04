@@ -215,7 +215,6 @@ public class DesignerController {
         offer.setDesigner(sessionDesigner());
         offer.setPrice(customer.getOffer().getPrice());
         offer.setTemplate(false);
-        customer.setOffer(null);
         customCustomerDetailsService.save(customer);
         offerService.save(offer);
         for (Event event : eventsToCopy){
@@ -223,7 +222,7 @@ public class DesignerController {
             eventToAdd.setCompleted(false);
             eventToAdd.setEndangered(false);
             eventToAdd.setEventName(event.getEventName());
-            eventToAdd.setFinalEvent(event.isCompleted());
+            eventToAdd.setFinalEvent(event.isFinalEvent());
             eventToAdd.setTemplateId(event.getId());
             eventToAdd.setOffer(offerService.findByCustomer(customer));
             eventService.save(eventToAdd);
@@ -235,7 +234,7 @@ public class DesignerController {
             List<Event> eventList=new ArrayList<>();
             for (Event dependentEvent : eventService.findById(event.getTemplateId()).getEvents()) {
                 //wrzucam w pętlę zależności z template eventu, który ma ID taki jak templateId skopiowanego eventu
-                eventList.add(eventService.findByTemplateId(dependentEvent.getId()));
+                eventList.add(eventService.findByTemplateIdAndOffer(dependentEvent.getId(), event.getOffer()));
                 //zapisuję do skopiowanego eventu inny skopiowany event o template id takim jak id templata z pętli
             }
             event.setEvents(eventList);

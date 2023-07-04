@@ -12,6 +12,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     public Event findEventByFinalEventIsTrue();
     public List<Event> findEventByEvents(Event event);
     public List<Event> findAllByOffer(Offer offer);
-    public Event findByTemplateId(Long templateId);
+    public Event findByTemplateIdAndOffer(Long templateId, Offer offer);
+    public Event findByOfferAndFinalEventIsTrue(Offer offer);
 
 }

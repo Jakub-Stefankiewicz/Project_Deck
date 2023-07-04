@@ -16,15 +16,14 @@ public class Customer {
     //    @NotBlank
     private String username;
 
+    private String email;
+    private String password;
+
     //    @NotBlank
     private String firstName;
 
     //    @NotBlank
     private String lastName;
-
-    //    @Email
-    private String email;
-    private String password;
 
     //    @NotBlank
     private String city;

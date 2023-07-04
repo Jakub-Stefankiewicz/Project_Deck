@@ -9,6 +9,7 @@ import pl.coderslab.entity.Offer;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.OfferService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -52,6 +53,11 @@ public class EventController {
     @PostMapping(path = "/offer/add_events/{id}")
     String saveEventsOnOffer(Event event) {
         event.setId(null);
+        if(event.isFinalEvent()){
+            for (Event eventToFinalRemove: eventService.findByOffer(event.getOffer())) {
+                eventToFinalRemove.setFinalEvent(false);
+            }
+        }
         eventService.save(event);
         return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
@@ -71,6 +77,11 @@ public class EventController {
 
     @PostMapping(path = "/event/edit/{id}")
     String saveEditedEvent(Event event) {
+        if(event.isFinalEvent()){
+            for (Event eventToFinalRemove: eventService.findByOffer(event.getOffer())) {
+                eventToFinalRemove.setFinalEvent(false);
+            }
+        }
         eventService.save(event);
         return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
@@ -127,11 +138,11 @@ public class EventController {
         return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
 
-//    @GetMapping(path = "/tree/{id}")
-//    String showTree(@PathVariable Long id, Model model){
-//        model.addAttribute("event", eventService.findFinal());
-//        return "designer/schemas/show-tree";
-//    }
+    @GetMapping(path = "/tree/{id}")
+    String showTree(@PathVariable Long id, Model model){
+        model.addAttribute("event", eventService.findFinal());
+        return "designer/schemas/show-tree";
+    }
 
 
 }

@@ -43,7 +43,11 @@ public class EventService {
     public List<Event> findByOffer(Offer offer) {
         return eventRepository.findAllByOffer(offer);
     }
-    public Event findByTemplateId(Long templateId){
-        return eventRepository.findByTemplateId(templateId);
+    public Event findByTemplateIdAndOffer(Long templateId, Offer offer){
+        return eventRepository.findByTemplateIdAndOffer(templateId, offer);
     }
+    public Event findFinalAndByOffer(Offer offer){
+        return eventRepository.findByOfferAndFinalEventIsTrue(offer);
+    }
+
 }

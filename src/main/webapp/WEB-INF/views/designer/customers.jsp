@@ -26,7 +26,8 @@ Lista aktywnych klientów
                 <td>${customer.firstName}</td>
                 <td>${customer.lastName}</td>
                 <td><a href="/designer/customer_details/${customer.id}">Szczegóły klienta</a>
-                    <a href="/designer/customer/add_offer/${customer.id}">Przypisz klientowi rodzaj projektu</a>
+                    <c:if test="${null==customer.offer}"> <a href="/designer/customer/add_offer/${customer.id}">Przypisz klientowi rodzaj projektu</a> </c:if>
+                    <c:if test="${null!=customer.offer}"> Przypisany projekt: ${customer.offer.projectType}} </c:if>
                     <a href="/designer/createdeal/${customer.id}">Sporządź umowę</a>
                     <a href="/designer/create_authorization/${customer.id}">Sporządź pełnomocnictwo</a>
             </tr>
