@@ -29,5 +29,9 @@ public class Event {
     @ToString.Exclude
     @ManyToMany
     private List<Event> events;
+    @ToString.Exclude
+    @ManyToOne
+    private Offer offer;
+    private Long templateId;
 
 }

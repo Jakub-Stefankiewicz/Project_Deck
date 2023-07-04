@@ -1,6 +1,8 @@
 package pl.coderslab.entity;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.mapping.ToOne;
+
 import java.time.LocalDate;
 
 @Entity
@@ -48,7 +50,7 @@ public class Customer {
     @ManyToOne
     //    @NotEmpty
     private Designer designer;
-    @ManyToOne
+    @OneToOne
     private Offer offer;
     @OneToOne
     private Deal deal;

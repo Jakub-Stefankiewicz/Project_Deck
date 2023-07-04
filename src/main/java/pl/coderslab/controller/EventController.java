@@ -1,8 +1,6 @@
 package pl.coderslab.controller;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.collection.spi.PersistentBag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +9,6 @@ import pl.coderslab.entity.Offer;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.OfferService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,7 +19,7 @@ public class EventController {
     private final OfferService offerService;
 
     /**
-     * Show schemas: offer and events. Add, edit, delete event.
+     * Show schemas. Also show events added to each schema.
      *
      * @param model : model to create attribute.
      * @return show-schemas.jsp file with all list options.
@@ -30,37 +27,33 @@ public class EventController {
     @GetMapping(path = "/list")
     String showSchemas(Model model) {
         model.addAttribute("offers", offerService.findAll());
-        model.addAttribute("event", new Event());
         model.addAttribute("events", eventService.findAll());
         return "designer/schemas/show-schemas";
-    }
-
-    @PostMapping(path = "/list")
-    String saveTree(Event event) {
-        if (event.getEventName() != null) {
-            eventService.save(event);
-        }
-        return "redirect:/schema/list";
     }
 
     /**
      * Add selected events to offer.
      *
      * @param id  offer`s id.
-     * @param model : model to create attribute.
-     * @return offer-add-event.jsp file with events to select.
+     * @param model : model to create attribute. Sends all events matched with offer.
+     * @return offer-add-event.jsp file with events to set and select.
      */
     @GetMapping(path = "/offer/add_events/{id}")
     String addEventsToOffer(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("offer", offerService.findById(id));
-        model.addAttribute("events", eventService.findAll());
-        return "designer/schemas/offer-add-event";
+        Offer offer=offerService.findById(id);
+        Event event=new Event();
+        event.setOffer(offer);
+        model.addAttribute("offer", offer);
+        model.addAttribute("event", event);
+        model.addAttribute("events", eventService.findByOffer(offer));
+        return "designer/schemas/offer-add-events";
     }
 
     @PostMapping(path = "/offer/add_events/{id}")
-    String saveEventsOnOffer(Offer offer) {
-        offerService.save(offer);
-        return "redirect:/schema/list";
+    String saveEventsOnOffer(Event event) {
+        event.setId(null);
+        eventService.save(event);
+        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
 
     /**
@@ -79,7 +72,7 @@ public class EventController {
     @PostMapping(path = "/event/edit/{id}")
     String saveEditedEvent(Event event) {
         eventService.save(event);
-        return "redirect:/schema/list";
+        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
 
     /**
@@ -108,7 +101,7 @@ public class EventController {
             }
         }
         eventService.delete(eventToDelete);
-        return "redirect:/schema/list";
+        return "redirect:/schema/offer/add_events/"+eventToDelete.getOffer().getId();
     }
 
     /**
@@ -121,7 +114,8 @@ public class EventController {
     @GetMapping(path = "/dependencies/add/{id}")
     String addDependencies(@PathVariable("id") Long id, Model model) {
         model.addAttribute("event", eventService.findById(id));
-        List<Event> eventList=eventService.findAll();
+        Offer offer=eventService.findById(id).getOffer();
+        List<Event> eventList=eventService.findByOffer(offer);
         eventList.remove(eventService.findById(id));
         model.addAttribute("eventsList", eventList);
         return "designer/schemas/add-dependencies";
@@ -130,13 +124,14 @@ public class EventController {
     @PostMapping(path = "/dependencies/add/{id}")
     String saveDependencies(Event event) {
         eventService.save(event);
-        return "redirect:/schema/list";
+        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
 
-    @GetMapping(path = "/tree/{id}")
-    String showTree(@PathVariable Long id, Model model){
-        model.addAttribute("event", eventService.findFinal());
-        return "designer/schemas/show-tree";
-    }
+//    @GetMapping(path = "/tree/{id}")
+//    String showTree(@PathVariable Long id, Model model){
+//        model.addAttribute("event", eventService.findFinal());
+//        return "designer/schemas/show-tree";
+//    }
+
 
 }

@@ -22,6 +22,11 @@ public class Offer {
     private Designer designer;
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Event> events;
-    @ManyToOne
-    private Offer offer;
+    /**
+     * Is offer a template of offers? Template offers are created to define schema and
+     * to be copied to new customer.
+     */
+    private Boolean template;
+    @OneToOne
+    private Customer customer;
 }

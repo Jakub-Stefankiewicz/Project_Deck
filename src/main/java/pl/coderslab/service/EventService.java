@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Event;
+import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.EventRepository;
 
 import java.util.List;
@@ -37,5 +38,12 @@ public class EventService {
 
     public List<Event> findByEvents(Event event) {
         return eventRepository.findEventByEvents(event);
+    }
+
+    public List<Event> findByOffer(Offer offer) {
+        return eventRepository.findAllByOffer(offer);
+    }
+    public Event findByTemplateId(Long templateId){
+        return eventRepository.findByTemplateId(templateId);
     }
 }

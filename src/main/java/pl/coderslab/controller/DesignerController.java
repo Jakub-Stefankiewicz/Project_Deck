@@ -10,6 +10,9 @@ import pl.coderslab.entity.*;
 import pl.coderslab.service.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class DesignerController {
     private final CustomCustomerDetailsService customCustomerDetailsService;
     private final DealService dealService;
     private final OfferService offerService;
+    private final EventService eventService;
     private final AuthorizationService authorizationService;
     private final PasswordEncoder passwordEncoder;
 
@@ -110,7 +114,8 @@ public class DesignerController {
 
 
     /**
-     * Create new offer.
+     * Create new template offer. Such offer is copied and added to customer, with
+     * customer id and dates set.
      *
      * @param model : model to create attribute.
      * @return add-offer.jsp file.
@@ -125,6 +130,7 @@ public class DesignerController {
     @PostMapping(path = "/offer/add")
     String saveOffer(Offer offer) {
         offer.setDesigner(sessionDesigner());
+        offer.setTemplate(true);
         offerService.save(offer);
         return "redirect:/designer/offers/list";
     }
@@ -195,15 +201,48 @@ public class DesignerController {
     @GetMapping(path = "/customer/add_offer/{id}")
     String addOfferToCustomer(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
-        model.addAttribute("projects", offerService.findAllByDesignerId(sessionDesigner().getId()));
+        model.addAttribute("project", new Offer());
+        model.addAttribute("projects", offerService.findByDesignerAndTemplate(sessionDesigner().getId()));
         return "designer/offer/add-offer-to-customer";
     }
 
     @PostMapping(path = "/customer/add_offer/{id}")
     String saveProjectToCustomer(Customer customer) {
-        Customer customerToSave = customCustomerDetailsService.loadCustomerById(customer.getId());
-        customerToSave.setOffer(customer.getOffer());
-        customCustomerDetailsService.save(customerToSave);
+        List<Event> eventsToCopy=eventService.findByOffer(customer.getOffer());
+        Offer offer=new Offer();
+        offer.setProjectType(customer.getOffer().getProjectType());
+        offer.setCustomer(customer);
+        offer.setDesigner(sessionDesigner());
+        offer.setPrice(customer.getOffer().getPrice());
+        offer.setTemplate(false);
+        customer.setOffer(null);
+        customCustomerDetailsService.save(customer);
+        offerService.save(offer);
+        for (Event event : eventsToCopy){
+            Event eventToAdd=new Event();
+            eventToAdd.setCompleted(false);
+            eventToAdd.setEndangered(false);
+            eventToAdd.setEventName(event.getEventName());
+            eventToAdd.setFinalEvent(event.isCompleted());
+            eventToAdd.setTemplateId(event.getId());
+            eventToAdd.setOffer(offerService.findByCustomer(customer));
+            eventService.save(eventToAdd);
+        }
+        List<Event> eventsToAddDependencies=eventService.findByOffer(offerService.findByCustomer(customer));
+        //wczytuje wszystkie nowe, skopiowane zależności
+        for (Event event: eventsToAddDependencies) {
+            //iteruje po skopiowanych zależnościach, bierze jedną, np. 35
+            List<Event> eventList=new ArrayList<>();
+            for (Event dependentEvent : eventService.findById(event.getTemplateId()).getEvents()) {
+                //wrzucam w pętlę zależności z template eventu, który ma ID taki jak templateId skopiowanego eventu
+                eventList.add(eventService.findByTemplateId(dependentEvent.getId()));
+                //zapisuję do skopiowanego eventu inny skopiowany event o template id takim jak id templata z pętli
+            }
+            event.setEvents(eventList);
+            eventService.save(event);
+            //zapisuję
+        }
+
         return "redirect:/designer/customers";
     }
 
@@ -248,5 +287,4 @@ public class DesignerController {
         System.out.println(email);
         return "redirect:/designer/customers";
     }
-
 }
