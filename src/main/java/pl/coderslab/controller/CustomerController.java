@@ -1,52 +1,34 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.collection.spi.PersistentBag;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.*;
 import pl.coderslab.service.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.security.Principal;
+
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/customer")
 public class CustomerController {
 
-    private final CustomCustomerDetailsService customCustomerDetailsService;
-    private final CustomDesignerDetailsService customDesignerDetailsService;
+    private final CustomerService customerService;
     private final DealService dealService;
     private final AuthorizationService authorizationService;
     private final EventService eventService;
     private final OfferService offerService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-
-    @GetMapping(path = "/add/{designerId}")
-    String add(Model model) {
-        model.addAttribute("emptyCustomer", new Customer());
-        return "customer/register";
-    }
-
-    @PostMapping(path = "/add/{designerId}")
-    String addNew(@PathVariable("designerId") Long designerId, Customer customer, Model model) {
-        Designer designer = customDesignerDetailsService.loadDesignerById(designerId);
-        customer.setDesigner(designer);
-        customer.setAdded(LocalDate.now());
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        customer.setActive(true);
-        customCustomerDetailsService.save(customer);
-        model.addAttribute("customer", customer);
-        return "customer/success";
+    @ModelAttribute("customer")
+    public Customer sessionCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByLogin(authentication.getName());
+        return customerService.loadByUser(user);
     }
 
     @GetMapping(path = "/home")
@@ -56,14 +38,13 @@ public class CustomerController {
 
     @GetMapping(path = "/deal")
     String deal(Model model) {
-        //dać ID zalogowanego customera
-        model.addAttribute("deal", dealService.getByCustomerId(1L));
+        model.addAttribute("deal", dealService.getByCustomerId(sessionCustomer().getId()));
         return "customer/deal";
     }
 
     @GetMapping(path = "/deal/accepted")
-    String dealAccepted(){
-        Deal deal=dealService.getByCustomerId(1L);
+    String dealAccepted() {
+        Deal deal = dealService.getByCustomerId(1L);
         deal.setAccepted(true);
         dealService.save(deal);
         return "customer/customer-home";
@@ -72,13 +53,14 @@ public class CustomerController {
     @GetMapping(path = "/authorization")
     String authorization(Model model) {
         //dać ID zalogowanego customera
-        model.addAttribute("authorization", authorizationService.findByCustomerId(1L));
+        model.addAttribute("authorization", authorizationService.findByCustomerId(sessionCustomer().getId()));
         return "customer/authorization";
     }
 
     @GetMapping(path = "/tree")
-    String showTree(Model model){
-        model.addAttribute("event", eventService.findFinalAndByOffer(offerService.findByCustomer(customCustomerDetailsService.loadCustomerById(1L))));
+    String showTree(Model model) {
+        model.addAttribute("event", eventService.findFinalAndByOffer(offerService
+                .findByCustomer(customerService.loadCustomerById(sessionCustomer().getId()))));
         return "customer/show-tree";
     }
 

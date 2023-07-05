@@ -17,9 +17,6 @@ public class Designer {
     private Long id;
 
     //    @NotBlank
-    private String username;
-
-    //    @NotBlank
     private String firstName;
 
     //    @NotBlank
@@ -27,7 +24,6 @@ public class Designer {
 
     private String companyName;
 
-    private String password;
     //    @Email
     private String email;
 
@@ -57,5 +53,7 @@ public class Designer {
     @OneToMany(mappedBy = "designer")
     @ToString.Exclude
     private List<Customer> customer = new ArrayList<>();
+    @OneToOne
+    private User user;
 
 }

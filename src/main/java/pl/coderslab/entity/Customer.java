@@ -13,11 +13,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @NotBlank
-    private String username;
-
     private String email;
-    private String password;
 
     //    @NotBlank
     private String firstName;
@@ -55,5 +51,7 @@ public class Customer {
     private Deal deal;
     @OneToOne
     private Authorization authorization;
+    @OneToOne
+    private User user;
 
 }

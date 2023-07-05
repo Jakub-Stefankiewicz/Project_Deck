@@ -13,22 +13,11 @@
     <title>Register customer</title>
 </head>
 <body>
-<form:form method="post" modelAttribute="emptyCustomer">
-
-
-    <div> Login <form:input path="username"/></div>
-    <div> Password <form:input path="password"/></div>
-    <div> Email <form:input path="email"/></div>
-    <div> First Name <form:input path="firstName"/></div>
-    <div> Last Name <form:input path="lastName"/></div>
-    <div> Phone Number <form:input path="phone"/></div>
-    <div> City <form:input path="city"/></div>
-    <div> Street <form:input path="street"/></div>
-    <div> House Number / Appartment Number <form:input path="houseNumber"/></div>
-    <div> Postal Code <form:input path="postalCode"/></div>
-
-    <input type="submit" value="Add Customer">
-
-</form:form>
+Zarejestruj nowego użytkownika<br>
+<form:form method="post" modelAttribute="user">
+   Login <form:input path="login"/> <br>
+   Hasło <form:input path="password"/><br>
+    <input type="submit" value="Zarejestruj">
+</form:form><br>
 </body>
 </html>

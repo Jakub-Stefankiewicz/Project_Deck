@@ -19,7 +19,7 @@ public class Deal {
     @OneToOne
     private Customer customer;
     private boolean accepted;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Offer offer;
 
 }

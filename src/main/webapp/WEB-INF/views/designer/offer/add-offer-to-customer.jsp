@@ -30,7 +30,6 @@ Klient: <c:out value="${customer.firstName}"/> <c:out value="${customer.lastName
     <form:hidden path="authorization"/>
     <form:hidden path="deal"/>
     <form:hidden path="phone"/>
-    <form:hidden path="username"/>
     <input type="submit" value="Dodaj"/>
 </form:form>
 </body>

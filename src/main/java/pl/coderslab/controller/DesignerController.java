@@ -2,7 +2,7 @@ package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,47 +12,26 @@ import pl.coderslab.service.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/designer")
 public class DesignerController {
 
-    private final CustomDesignerDetailsService customDesignerDetailsService;
-    private final CustomCustomerDetailsService customCustomerDetailsService;
+    private final DesignerService designerService;
+    private final CustomerService customerService;
     private final DealService dealService;
     private final OfferService offerService;
     private final EventService eventService;
     private final AuthorizationService authorizationService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+
 
     @ModelAttribute("designer")
     public Designer sessionDesigner() {
-        //dodać pobieranego po ID
-        return customDesignerDetailsService.loadDesignerById(1L);
-    }
-
-    /**
-     * Adds new designer.
-     *
-     * @param model : model to create attribute.
-     * @return : register.jsp file
-     */
-    @GetMapping(path = "/add")
-    String add(Model model) {
-        model.addAttribute("emptyDesigner", new Designer());
-        return "designer/register";
-    }
-
-    @PostMapping(path = "/add")
-    String addNew(Designer designer, Model model) {
-        designer.setAdded(LocalDate.now());
-        designer.setPassword(passwordEncoder.encode(designer.getPassword()));
-        designer.setActive(true);
-        customDesignerDetailsService.save(designer);
-        model.addAttribute("designer", designer);
-        return "designer/success";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByLogin(authentication.getName());
+        return designerService.findByUser(user);
     }
 
     /**
@@ -66,7 +45,7 @@ public class DesignerController {
     String home(Model model, Authentication authentication) {
         //UWAGA: DOPISAĆ Auth POBIERAJĄCEGO ID Z AKTUALNIE ZALOGOWANEGO DESIGNERA I PRZEKAZUJĄCEGO DO PONIŻSZEJ METODY ew zmienić na load by designer username
 
-        model.addAttribute("designerCustomers", customCustomerDetailsService.loadAllCustomersByDesignerId(1L));
+        model.addAttribute("designerCustomers", customerService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
         return "designer/designer-home";
     }
 
@@ -85,10 +64,10 @@ public class DesignerController {
         deal.setCreated(LocalDate.now());
         deal.setNotes("bez uwag");
         deal.setDesigner(sessionDesigner());
-        deal.setCustomer(customCustomerDetailsService.loadCustomerById(id));
-        if (customCustomerDetailsService.loadCustomerById(id).getOffer() != null) {
-            deal.setOffer(customCustomerDetailsService.loadCustomerById(id).getOffer());
-            deal.setValue(customCustomerDetailsService.loadCustomerById(id).getOffer().getPrice());
+        deal.setCustomer(customerService.loadCustomerById(id));
+        if (customerService.loadCustomerById(id).getOffer() != null) {
+            deal.setOffer(customerService.loadCustomerById(id).getOffer());
+            deal.setValue(customerService.loadCustomerById(id).getOffer().getPrice());
         }
         model.addAttribute("deal", deal);
         return "designer/create-deal";
@@ -174,7 +153,7 @@ public class DesignerController {
      */
     @GetMapping(path = "/customers")
     String customers(Model model) {
-        model.addAttribute("designerCustomers", customCustomerDetailsService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
+        model.addAttribute("designerCustomers", customerService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
         return "designer/customers";
     }
 
@@ -187,7 +166,7 @@ public class DesignerController {
      */
     @GetMapping(path = "/customer_details/{id}")
     String customerDetails(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
+        model.addAttribute("customer", customerService.loadCustomerById(id));
         return "designer/customer-details";
     }
 
@@ -200,7 +179,7 @@ public class DesignerController {
      */
     @GetMapping(path = "/customer/add_offer/{id}")
     String addOfferToCustomer(@PathVariable Long id, Model model) {
-        model.addAttribute("customer", customCustomerDetailsService.loadCustomerById(id));
+        model.addAttribute("customer", customerService.loadCustomerById(id));
         model.addAttribute("project", new Offer());
         model.addAttribute("projects", offerService.findByDesignerAndTemplate(sessionDesigner().getId()));
         return "designer/offer/add-offer-to-customer";
@@ -215,7 +194,7 @@ public class DesignerController {
         offer.setDesigner(sessionDesigner());
         offer.setPrice(customer.getOffer().getPrice());
         offer.setTemplate(false);
-        customCustomerDetailsService.save(customer);
+        customerService.save(customer);
         offerService.save(offer);
         for (Event event : eventsToCopy){
             Event eventToAdd=new Event();
@@ -254,11 +233,11 @@ public class DesignerController {
     String createAuthorization(@PathVariable Long id, Model model) {
         Authorization authorization = new Authorization();
         authorization.setCreated(LocalDate.now());
-        if (customCustomerDetailsService.loadCustomerById(id).getOffer() != null) {
-            authorization.setOffer(customCustomerDetailsService.loadCustomerById(id).getOffer());
+        if (customerService.loadCustomerById(id).getOffer() != null) {
+            authorization.setOffer(customerService.loadCustomerById(id).getOffer());
         }
         authorization.setDesigner(sessionDesigner());
-        authorization.setCustomer(customCustomerDetailsService.loadCustomerById(id));
+        authorization.setCustomer(customerService.loadCustomerById(id));
         model.addAttribute("authorization", authorization);
         return "designer/create-authorization";
     }
@@ -277,7 +256,7 @@ public class DesignerController {
      */
     @GetMapping(path = "/archives")
     String showArchives(Model model) {
-        model.addAttribute("designerCustomers", customCustomerDetailsService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
+        model.addAttribute("designerCustomers", customerService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
         return "designer/archives";
     }
 

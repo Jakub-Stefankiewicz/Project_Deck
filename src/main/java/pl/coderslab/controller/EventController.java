@@ -1,14 +1,21 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.entity.Designer;
 import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
+import pl.coderslab.entity.User;
+import pl.coderslab.service.DesignerService;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.OfferService;
+import pl.coderslab.service.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +25,15 @@ import java.util.List;
 public class EventController {
     private final EventService eventService;
     private final OfferService offerService;
+    private final DesignerService designerService;
+    private final UserService userService;
+
+    @ModelAttribute("designer")
+    public Designer sessionDesigner() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByLogin(authentication.getName());
+        return designerService.findByUser(user);
+    }
 
     /**
      * Show schemas. Also show events added to each schema.
@@ -27,7 +43,8 @@ public class EventController {
      */
     @GetMapping(path = "/list")
     String showSchemas(Model model) {
-        model.addAttribute("offers", offerService.findAll());
+        model.addAttribute("offers", offerService
+                .findByDesignerAndTemplate(sessionDesigner().getId()));
         model.addAttribute("events", eventService.findAll());
         return "designer/schemas/show-schemas";
     }
