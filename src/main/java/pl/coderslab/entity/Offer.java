@@ -20,7 +20,7 @@ public class Offer {
     private double price;
     @ManyToOne
     private Designer designer;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "offer")
     private List<Event> events;
     /**
      * Is offer a template of offers? Template offers are created to define schema and
