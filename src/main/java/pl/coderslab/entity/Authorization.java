@@ -1,10 +1,11 @@
 package pl.coderslab.entity;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Table(name = "authorization")
@@ -16,7 +17,8 @@ public class Authorization {
     private LocalDate created;
     @ManyToOne
     private Designer designer;
-    @OneToOne
+    @ToString.Exclude
+    @OneToOne(cascade = CascadeType.ALL)
     private Customer customer;
     @OneToOne
     private Offer offer;

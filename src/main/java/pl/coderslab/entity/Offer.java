@@ -1,6 +1,8 @@
 package pl.coderslab.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,6 +18,7 @@ public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String projectType;
     private double price;
     @ManyToOne
@@ -27,6 +30,7 @@ public class Offer {
      * to be copied to new customer.
      */
     private Boolean template;
+    @ToString.Exclude
     @OneToOne
     private Customer customer;
 }

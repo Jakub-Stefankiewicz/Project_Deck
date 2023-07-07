@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Deal;
+import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.DealRepository;
 
 import java.util.Optional;
@@ -26,6 +27,14 @@ public class DealService {
             throw new NotFoundException("Deal not found");
         }
         return dealOptional.get();
+    }
+
+    public Deal findByOffer(Offer offer){
+        return dealRepository.findByOffer(offer).get();
+    }
+
+    public boolean existsByOffer(Offer offer){
+        return dealRepository.existsByOffer(offer);
     }
 
 }

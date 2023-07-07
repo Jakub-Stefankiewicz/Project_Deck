@@ -75,7 +75,9 @@ public class DesignerController {
 
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
-        dealService.save(deal);
+        Customer customer=deal.getCustomer();
+        customer.setDeal(deal);
+        customerService.save(customer);
         return "redirect:/designer/customers";
     }
 
@@ -122,7 +124,29 @@ public class DesignerController {
      */
     @GetMapping(path = "/offer/delete/{id}")
     String deleteOffer(@PathVariable("id") Long id) {
-        offerService.delete(offerService.findById(id));
+        Offer offerToClear = offerService.findById(id);
+        //sprawdź czy jest coś przypisane do oferty, jak tak to usuń
+        if(dealService.existsByOffer(offerToClear)) {
+            Deal dealToClear = dealService.findByOffer(offerToClear);
+            dealToClear.setOffer(null);
+            dealService.save(dealToClear);
+        }
+        if(authorizationService.existsByOffer(offerToClear)) {
+            Authorization authorizationToClear=authorizationService.findByOffer(offerToClear);
+            authorizationToClear.setOffer(null);
+            authorizationService.save(authorizationToClear);
+        }
+        Customer customerToClear=customerService.findByOffer(offerToClear);
+        if(customerToClear!=null){
+            customerToClear.setOffer(null);
+            customerService.save(customerToClear);
+        }
+        List<Event> eventsToClear=eventService.findByOffer(offerToClear);
+        for (Event event : eventsToClear) {
+            event.setOffer(null);
+            eventService.save(event);
+        }
+        offerService.delete(offerToClear);
         return "redirect:/designer/offers/list";
     }
 
@@ -187,17 +211,21 @@ public class DesignerController {
 
     @PostMapping(path = "/customer/add_offer/{id}")
     String saveProjectToCustomer(Customer customer) {
-        List<Event> eventsToCopy=eventService.findByOffer(customer.getOffer());
-        Offer offer=new Offer();
+        List<Event> eventsToCopy = eventService.findByOffer(customer.getOffer());
+        Offer offer = new Offer();
         offer.setProjectType(customer.getOffer().getProjectType());
         offer.setCustomer(customer);
         offer.setDesigner(sessionDesigner());
         offer.setPrice(customer.getOffer().getPrice());
         offer.setTemplate(false);
-        customerService.save(customer);
         offerService.save(offer);
-        for (Event event : eventsToCopy){
-            Event eventToAdd=new Event();
+        //nadpisywanie offer id w customerze- dodajemy przed chwilą dodaną ofertę
+        customer.setOffer(offerService.findByCustomer(customer));
+        customerService.save(customer);
+
+
+        for (Event event : eventsToCopy) {
+            Event eventToAdd = new Event();
             eventToAdd.setCompleted(false);
             eventToAdd.setEndangered(false);
             eventToAdd.setEventName(event.getEventName());
@@ -206,11 +234,11 @@ public class DesignerController {
             eventToAdd.setOffer(offerService.findByCustomer(customer));
             eventService.save(eventToAdd);
         }
-        List<Event> eventsToAddDependencies=eventService.findByOffer(offerService.findByCustomer(customer));
+        List<Event> eventsToAddDependencies = eventService.findByOffer(offerService.findByCustomer(customer));
         //wczytuje wszystkie nowe, skopiowane zależności
-        for (Event event: eventsToAddDependencies) {
+        for (Event event : eventsToAddDependencies) {
             //iteruje po skopiowanych zależnościach, bierze jedną, np. 35
-            List<Event> eventList=new ArrayList<>();
+            List<Event> eventList = new ArrayList<>();
             for (Event dependentEvent : eventService.findById(event.getTemplateId()).getEvents()) {
                 //wrzucam w pętlę zależności z template eventu, który ma ID taki jak templateId skopiowanego eventu
                 eventList.add(eventService.findByTemplateIdAndOffer(dependentEvent.getId(), event.getOffer()));
@@ -244,7 +272,9 @@ public class DesignerController {
 
     @PostMapping(path = "/create_authorization/{id}")
     String saveAuthorization(Authorization authorization) {
-        authorizationService.save(authorization);
+        Customer customer=authorization.getCustomer();
+        customer.setAuthorization(authorization);
+        customerService.save(customer);
         return "redirect:/designer/customers";
     }
 
@@ -261,7 +291,7 @@ public class DesignerController {
     }
 
     @PostMapping(path = "/customers")
-    String sendEmail(@RequestParam("email") String email){
+    String sendEmail(@RequestParam("email") String email) {
         System.out.println(email);
         return "redirect:/designer/customers";
     }

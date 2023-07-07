@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Customer;
+import pl.coderslab.entity.Offer;
 import pl.coderslab.entity.User;
 import pl.coderslab.repository.CustomerRepository;
 
@@ -35,6 +36,10 @@ public class CustomerService {
 
     public Customer loadByUser(User user){
         return customerRepository.findByUser(user);
+    }
+
+    public Customer findByOffer(Offer offer){
+        return customerRepository.findByOffer(offer);
     }
 
 }

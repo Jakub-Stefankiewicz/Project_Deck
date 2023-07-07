@@ -15,7 +15,7 @@
 <body>
 Schematy ofert:
 
-<table>
+<table style="text-align: center; border:1px solid black">
     <tr>
         <td>Nazwa schematu</td>
         <td>Przypisane zależności</td>
@@ -25,7 +25,7 @@ Schematy ofert:
         <c:if test="${true==offer.template}">
         <tr>
             <td>${offer.projectType}</td>
-            <td>
+            <td style="text-align: center; border:1px solid black">
                 <c:forEach var="event" items="${events}">
                     <c:if test="${event.offer.id==offer.id}">
                     ${event.eventName}<br>

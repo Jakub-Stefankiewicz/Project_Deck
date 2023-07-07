@@ -19,12 +19,15 @@
         <td>Akcja</td>
     </tr>
     <c:forEach items="${offers}" var="offer">
+        <c:if test="${true==offer.template}">
         <tr>
             <td>${offer.projectType}</td>
             <td>${offer.price}</td>
-            <td><a href="/designer/offer/edit/${offer.id}"> Edytuj ofertę</a>  <a href="/designer/offer/delete/${offer.id}"
-                                                                                  onclick="return confirm('Are you sure?')">Usuń ofertę</a> </td>
+            <td><a href="/designer/offer/edit/${offer.id}"> Edytuj ofertę</a>
+                <a href="/designer/offer/delete/${offer.id}" onclick="return confirm('Are you sure?')">Usuń ofertę</a>
+            </td>
         </tr>
+        </c:if>
     </c:forEach>
 </table>
 <a href="/designer/offer/add">Dodaj nową ofertę do listy</a><br>

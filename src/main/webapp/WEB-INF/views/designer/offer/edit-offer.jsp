@@ -17,6 +17,9 @@
   Cena projektu: <form:input path="price"/>
   <form:hidden path="id" value="${offerToEdit.id}"/>
   <form:hidden path="designer" value="${offerToEdit.designer.id}"/>
+  <form:hidden path="customer"/>
+  <form:hidden path="template"/>
+  <form:hidden path="events"/>
   <input type="submit" value="Edit offer"/>
 </form:form>
 </body>

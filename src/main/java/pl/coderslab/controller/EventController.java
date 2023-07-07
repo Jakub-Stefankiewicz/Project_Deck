@@ -14,9 +14,6 @@ import pl.coderslab.service.DesignerService;
 import pl.coderslab.service.EventService;
 import pl.coderslab.service.OfferService;
 import pl.coderslab.service.UserService;
-
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -155,11 +152,16 @@ public class EventController {
         return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
     }
 
+    /**
+     * Show project tree- offer and added events.
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping(path = "/tree/{id}")
     String showTree(@PathVariable Long id, Model model){
         model.addAttribute("event", eventService.findFinal());
         return "designer/schemas/show-tree";
     }
-
-
 }

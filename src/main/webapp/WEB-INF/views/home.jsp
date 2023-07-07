@@ -13,10 +13,9 @@
 <body>
 Homepage<br>
 <br>
-Designer: sign in<br>
-Designer: log in<br>
-<br>
-Customer: sign in<br>
-Customer: log in<br>
+<a href="/register/designer">Designer: sign in</a><br>
+<a href="/register/customer/1">Customer: sign in</a><br>
+<a href="/customer/home">Customer: log in</a><br>
+<a href="/designer/home">Designer: log in</a><br>
 </body>
 </html>

@@ -1,7 +1,13 @@
 package pl.coderslab.entity;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.ToString;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,40 +22,34 @@ public class Designer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @NotBlank
+    @NotBlank
     private String firstName;
 
-    //    @NotBlank
+    @NotBlank
     private String lastName;
 
     private String companyName;
 
-    //    @Email
+    @Email
     private String email;
 
-
-    //    @NotBlank
+    @NotBlank
     private String city;
 
-    //    @NotBlank
+    @NotBlank
     private String street;
 
-    //    @NotBlank
     private int postalCode;
 
-    //    @NotBlank
+    @NotBlank
     private String houseNumber;
 
-    //    @NotBlank
     private int phone;
 
-    //    @NotEmpty
     private LocalDate added;
 
-    //    @NotEmpty
     private boolean active;
 
-    //    @NotEmpty
     @OneToMany(mappedBy = "designer")
     @ToString.Exclude
     private List<Customer> customer = new ArrayList<>();

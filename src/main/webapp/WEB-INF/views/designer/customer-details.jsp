@@ -16,7 +16,6 @@ Dane klienta: <br>
 ID <c:out value="${customer.id}"/><br>
 Imię: <c:out value="${customer.firstName}"/><br>
 Nazwisko: <c:out value="${customer.lastName}"/><br>
-Login: <c:out value="${customer.username}"/><br>
 Telefon: <c:out value="${customer.phone}"/><br>
 Miasto: <c:out value="${customer.city}"/>, kod pocztowy: <c:out value="${customer.postalCode}"/><br>
 Ulica: <c:out value="${customer.street}"/>, numer domu/mieszkania<c:out value="${customer.houseNumber}"/><br>

@@ -23,6 +23,7 @@ Dodajesz zależności do: <br>
     <form:hidden path="expiration"/>
     <form:hidden path="id"/>
     <form:hidden path="offer"/>
+    <form:hidden path="finalEvent"/>
     <input type="submit"/>
 </form:form>
 

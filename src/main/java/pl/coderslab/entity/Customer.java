@@ -1,5 +1,10 @@
 package pl.coderslab.entity;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.mapping.ToOne;
 
@@ -13,43 +18,42 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     private String email;
 
-    //    @NotBlank
+    @NotBlank
     private String firstName;
 
-    //    @NotBlank
+    @NotBlank
     private String lastName;
 
-    //    @NotBlank
+    @NotBlank
     private String city;
 
-    //    @NotBlank
+    @NotBlank
     private String street;
 
-    //    @NotBlank
+    @NotNull
     private int postalCode;
 
-    //    @NotBlank
+    @NotBlank
     private String houseNumber;
 
-    //    @NotBlank
+    @NotNull
     private int phone;
 
-    //    @NotEmpty
+
     private LocalDate added;
 
-    //    @NotEmpty
     private boolean active;
 
     @ManyToOne
-    //    @NotEmpty
     private Designer designer;
     @OneToOne
     private Offer offer;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Deal deal;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Authorization authorization;
     @OneToOne
     private User user;
