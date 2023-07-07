@@ -2,6 +2,7 @@ package pl.coderslab.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Role;
@@ -10,6 +11,7 @@ import pl.coderslab.repository.RoleRepository;
 import pl.coderslab.repository.UserRepository;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +38,19 @@ public class UserService {
     }
 
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login).get();
+        Optional<User> user = userRepository.findByLogin(login);
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
+        }
+        return user.get();
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).get();
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
+        }
+        return user.get();
     }
 
     public boolean existsByLogin(String login) {

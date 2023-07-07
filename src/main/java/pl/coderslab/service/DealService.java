@@ -29,7 +29,11 @@ public class DealService {
     }
 
     public Deal findByOffer(Offer offer) {
-        return dealRepository.findByOffer(offer).get();
+        Optional<Deal> deal = dealRepository.findByOffer(offer);
+        if (deal.isEmpty()) {
+            throw new NotFoundException("Deal not found");
+        }
+        return deal.get();
     }
 
     public boolean existsByOffer(Offer offer) {

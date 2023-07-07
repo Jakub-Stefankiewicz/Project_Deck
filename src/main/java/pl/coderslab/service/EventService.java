@@ -2,11 +2,13 @@ package pl.coderslab.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.EventRepository;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,11 @@ public class EventService {
     }
 
     public Event findById(Long id) {
-        return eventRepository.findById(id).get();
+        Optional<Event> event = eventRepository.findById(id);
+        if (event.isEmpty()) {
+            throw new NotFoundException("Event not found");
+        }
+        return event.get();
     }
 
     public Event findFinal() {

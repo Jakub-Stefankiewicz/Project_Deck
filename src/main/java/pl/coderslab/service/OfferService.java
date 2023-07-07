@@ -2,12 +2,14 @@ package pl.coderslab.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Customer;
 import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.OfferRepository;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,11 @@ public class OfferService {
     }
 
     public Offer findById(Long id) {
-        return offerRepository.findById(id).get();
+        Optional<Offer> offer = offerRepository.findById(id);
+        if (offer.isEmpty()) {
+            throw new NotFoundException("Offer not found");
+        }
+        return offer.get();
     }
 
     public List<Offer> findByEvent(Event event) {
