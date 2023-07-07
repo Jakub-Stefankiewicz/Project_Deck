@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Deal;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.DealRepository;
-
 import java.util.Optional;
 
 @Service
@@ -22,18 +21,18 @@ public class DealService {
     }
 
     public Deal getByCustomerId(Long id) {
-        Optional<Deal> dealOptional=dealRepository.getDealByCustomer_Id(id);
-        if(dealOptional.isEmpty()){
+        Optional<Deal> dealOptional = dealRepository.getDealByCustomer_Id(id);
+        if (dealOptional.isEmpty()) {
             throw new NotFoundException("Deal not found");
         }
         return dealOptional.get();
     }
 
-    public Deal findByOffer(Offer offer){
+    public Deal findByOffer(Offer offer) {
         return dealRepository.findByOffer(offer).get();
     }
 
-    public boolean existsByOffer(Offer offer){
+    public boolean existsByOffer(Offer offer) {
         return dealRepository.existsByOffer(offer);
     }
 

@@ -1,7 +1,6 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.entity.*;
 import pl.coderslab.service.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,11 @@ public class DesignerController {
     private final UserService userService;
     private final MailService mailService;
 
-
+    /**
+     * Get designer active in session.
+     *
+     * @return logged in designer.
+     */
     @ModelAttribute("designer")
     public Designer sessionDesigner() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +79,7 @@ public class DesignerController {
 
     @PostMapping(path = "/createdeal/{customerId}")
     String saveDeal(Deal deal) {
-        Customer customer=deal.getCustomer();
+        Customer customer = deal.getCustomer();
         customer.setDeal(deal);
         customerService.save(customer);
         return "redirect:/designer/customers";
@@ -128,22 +130,22 @@ public class DesignerController {
     String deleteOffer(@PathVariable("id") Long id) {
         Offer offerToClear = offerService.findById(id);
         //sprawdź czy jest coś przypisane do oferty, jak tak to usuń
-        if(dealService.existsByOffer(offerToClear)) {
+        if (dealService.existsByOffer(offerToClear)) {
             Deal dealToClear = dealService.findByOffer(offerToClear);
             dealToClear.setOffer(null);
             dealService.save(dealToClear);
         }
-        if(authorizationService.existsByOffer(offerToClear)) {
-            Authorization authorizationToClear=authorizationService.findByOffer(offerToClear);
+        if (authorizationService.existsByOffer(offerToClear)) {
+            Authorization authorizationToClear = authorizationService.findByOffer(offerToClear);
             authorizationToClear.setOffer(null);
             authorizationService.save(authorizationToClear);
         }
-        Customer customerToClear=customerService.findByOffer(offerToClear);
-        if(customerToClear!=null){
+        Customer customerToClear = customerService.findByOffer(offerToClear);
+        if (customerToClear != null) {
             customerToClear.setOffer(null);
             customerService.save(customerToClear);
         }
-        List<Event> eventsToClear=eventService.findByOffer(offerToClear);
+        List<Event> eventsToClear = eventService.findByOffer(offerToClear);
         for (Event event : eventsToClear) {
             event.setOffer(null);
             eventService.save(event);
@@ -274,7 +276,7 @@ public class DesignerController {
 
     @PostMapping(path = "/create_authorization/{id}")
     String saveAuthorization(Authorization authorization) {
-        Customer customer=authorization.getCustomer();
+        Customer customer = authorization.getCustomer();
         customer.setAuthorization(authorization);
         customerService.save(customer);
         return "redirect:/designer/customers";
@@ -292,32 +294,58 @@ public class DesignerController {
         return "designer/archives";
     }
 
+    /**
+     * Send mail method.
+     *
+     * @param email : model to set attribute.
+     * @return redirect to customer list.
+     */
     @PostMapping(path = "/customers")
     String sendEmail(@RequestParam("email") String email) {
-        String subject="Witamy na platformie projektowej Project Deck!";
-        String text="Witaj! \n"
+        String subject = "Witamy na platformie projektowej Project Deck!";
+        String text = "Witaj! \n"
                 + "Zostałeś zaproszony do korzystania z platformy projektowej!\n"
                 + "Utwórz swoje konto- klinkij w link : http://localhost:8080/register/customer/" + sessionDesigner().getId();
         mailService.sendMessage(email, subject, text);
         return "redirect:/designer/customers";
     }
 
+    /**
+     * Archive customer.
+     *
+     * @param id : customer`s id.
+     * @return : designer/designer-home.jsp view
+     */
     @GetMapping(path = "/archive/{id}")
-    String archiveCustomer(@PathVariable("id") Long id){
-        Customer customer=customerService.loadCustomerById(id);
+    String archiveCustomer(@PathVariable("id") Long id) {
+        Customer customer = customerService.loadCustomerById(id);
         customer.setActive(false);
         customerService.save(customer);
         return "designer/designer-home";
     }
 
+    /**
+     * Path used only if deal is accepted.
+     *
+     * @param customerId : deal customer`s id.
+     * @param model      : model to set attribute.
+     * @return designer/show-deal.jsp view.
+     */
     @GetMapping(path = "/deal/show/{customerId}")
-    String showDeal(@PathVariable Long customerId, Model model){
+    String showDeal(@PathVariable Long customerId, Model model) {
         model.addAttribute("deal", dealService.getByCustomerId(customerId));
         return "designer/show-deal";
     }
 
+    /**
+     * Path used only if deal is accepted.
+     *
+     * @param customerId : authorization customer`s id.
+     * @param model      : model to set attribute.
+     * @return : designer/show-authorization.jsp view.
+     */
     @GetMapping(path = "/authorization/show/{customerId}")
-    String showAuthorization(@PathVariable Long customerId, Model model){
+    String showAuthorization(@PathVariable Long customerId, Model model) {
         model.addAttribute("authorization", authorizationService.findByCustomerId(customerId));
         return "designer/show-authorization";
     }

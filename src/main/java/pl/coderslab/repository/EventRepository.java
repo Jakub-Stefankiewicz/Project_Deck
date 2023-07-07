@@ -1,18 +1,20 @@
 package pl.coderslab.repository;
 
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
-
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    public Event findEventByFinalEventIsTrue();
-    public List<Event> findEventByEvents(Event event);
-    public List<Event> findAllByOffer(Offer offer);
-    public Event findByTemplateIdAndOffer(Long templateId, Offer offer);
-    public Event findByOfferAndFinalEventIsTrue(Offer offer);
+    Event findEventByFinalEventIsTrue();
+
+    List<Event> findEventByEvents(Event event);
+
+    List<Event> findAllByOffer(Offer offer);
+
+    Event findByTemplateIdAndOffer(Long templateId, Offer offer);
+
+    Event findByOfferAndFinalEventIsTrue(Offer offer);
 
 }

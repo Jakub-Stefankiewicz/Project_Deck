@@ -1,9 +1,9 @@
 package pl.coderslab.entity;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
-
 import java.time.LocalDate;
 
 @Entity

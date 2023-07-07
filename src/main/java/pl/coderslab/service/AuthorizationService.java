@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Authorization;
-import pl.coderslab.entity.Deal;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.AuthorizationRepository;
 
@@ -22,11 +21,11 @@ public class AuthorizationService {
         authorizationRepository.save(authorization);
     }
 
-    public Authorization findByOffer(Offer offer){
+    public Authorization findByOffer(Offer offer) {
         return authorizationRepository.findByOffer(offer).get();
     }
 
-    public boolean existsByOffer(Offer offer){
+    public boolean existsByOffer(Offer offer) {
         return authorizationRepository.existsByOffer(offer);
     }
 

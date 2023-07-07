@@ -25,6 +25,11 @@ public class EventController {
     private final DesignerService designerService;
     private final UserService userService;
 
+    /**
+     * Get designer active in session.
+     *
+     * @return logged in designer.
+     */
     @ModelAttribute("designer")
     public Designer sessionDesigner() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,14 +54,14 @@ public class EventController {
     /**
      * Add selected events to offer.
      *
-     * @param id  offer`s id.
+     * @param id    offer`s id.
      * @param model : model to create attribute. Sends all events matched with offer.
      * @return offer-add-event.jsp file with events to set and select.
      */
     @GetMapping(path = "/offer/add_events/{id}")
     String addEventsToOffer(@PathVariable("id") Long id, Model model) {
-        Offer offer=offerService.findById(id);
-        Event event=new Event();
+        Offer offer = offerService.findById(id);
+        Event event = new Event();
         event.setOffer(offer);
         model.addAttribute("offer", offer);
         model.addAttribute("event", event);
@@ -67,19 +72,19 @@ public class EventController {
     @PostMapping(path = "/offer/add_events/{id}")
     String saveEventsOnOffer(Event event) {
         event.setId(null);
-        if(event.isFinalEvent()){
-            for (Event eventToFinalRemove: eventService.findByOffer(event.getOffer())) {
+        if (event.isFinalEvent()) {
+            for (Event eventToFinalRemove : eventService.findByOffer(event.getOffer())) {
                 eventToFinalRemove.setFinalEvent(false);
             }
         }
         eventService.save(event);
-        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
+        return "redirect:/schema/offer/add_events/" + event.getOffer().getId();
     }
 
     /**
      * Edit selected event.
      *
-     * @param id : event`s id.
+     * @param id    : event`s id.
      * @param model : model to create attribute.
      * @return : edit-event.jsp file with inputs to edit.
      */
@@ -91,13 +96,13 @@ public class EventController {
 
     @PostMapping(path = "/event/edit/{id}")
     String saveEditedEvent(Event event) {
-        if(event.isFinalEvent()){
-            for (Event eventToFinalRemove: eventService.findByOffer(event.getOffer())) {
+        if (event.isFinalEvent()) {
+            for (Event eventToFinalRemove : eventService.findByOffer(event.getOffer())) {
                 eventToFinalRemove.setFinalEvent(false);
             }
         }
         eventService.save(event);
-        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
+        return "redirect:/schema/offer/add_events/" + event.getOffer().getId();
     }
 
     /**
@@ -110,37 +115,37 @@ public class EventController {
      */
     @GetMapping(path = "/event/delete/{id}")
     String deleteEvent(@PathVariable("id") Long id) {
-        Event eventToDelete=eventService.findById(id);
-        List<Event> eventsToClear=eventService.findByEvents(eventToDelete);
-        if(eventsToClear!=null){
+        Event eventToDelete = eventService.findById(id);
+        List<Event> eventsToClear = eventService.findByEvents(eventToDelete);
+        if (eventsToClear != null) {
             for (Event event : eventsToClear) {
                 event.getEvents().remove(eventToDelete);
                 eventService.save(event);
             }
         }
-        List<Offer> offersToClear=offerService.findByEvent(eventToDelete);
-        if(offersToClear!=null){
+        List<Offer> offersToClear = offerService.findByEvent(eventToDelete);
+        if (offersToClear != null) {
             for (Offer offer : offersToClear) {
                 offer.getEvents().remove(eventToDelete);
                 offerService.save(offer);
             }
         }
         eventService.delete(eventToDelete);
-        return "redirect:/schema/offer/add_events/"+eventToDelete.getOffer().getId();
+        return "redirect:/schema/offer/add_events/" + eventToDelete.getOffer().getId();
     }
 
     /**
      * Adds dependencies to event- events that must be completed to complete selected event.
      *
-     * @param id : event`s id to add dependencies.
+     * @param id    : event`s id to add dependencies.
      * @param model : model to create attribute.
      * @return add-dependencies.jsp file to select dependencies.
      */
     @GetMapping(path = "/dependencies/add/{id}")
     String addDependencies(@PathVariable("id") Long id, Model model) {
         model.addAttribute("event", eventService.findById(id));
-        Offer offer=eventService.findById(id).getOffer();
-        List<Event> eventList=eventService.findByOffer(offer);
+        Offer offer = eventService.findById(id).getOffer();
+        List<Event> eventList = eventService.findByOffer(offer);
         eventList.remove(eventService.findById(id));
         model.addAttribute("eventsList", eventList);
         return "designer/schemas/add-dependencies";
@@ -149,7 +154,7 @@ public class EventController {
     @PostMapping(path = "/dependencies/add/{id}")
     String saveDependencies(Event event) {
         eventService.save(event);
-        return "redirect:/schema/offer/add_events/"+event.getOffer().getId();
+        return "redirect:/schema/offer/add_events/" + event.getOffer().getId();
     }
 
     /**
@@ -160,7 +165,7 @@ public class EventController {
      * @return
      */
     @GetMapping(path = "/tree/{id}")
-    String showTree(@PathVariable Long id, Model model){
+    String showTree(@PathVariable Long id, Model model) {
         model.addAttribute("event", eventService.findFinal());
         return "designer/schemas/show-tree";
     }

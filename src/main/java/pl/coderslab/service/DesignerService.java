@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Designer;
 import pl.coderslab.entity.User;
 import pl.coderslab.repository.DesignerRepository;
-
 import java.util.Optional;
 
 
@@ -26,7 +25,8 @@ public class DesignerService {
         }
         return optionalDesigner.get();
     }
-    public Designer findByUser(User user){
+
+    public Designer findByUser(User user) {
         return designerRepository.findByUser(user);
     }
 

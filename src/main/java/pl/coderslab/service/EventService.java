@@ -1,13 +1,11 @@
 package pl.coderslab.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.coderslab.entity.Event;
 import pl.coderslab.entity.Offer;
 import pl.coderslab.repository.EventRepository;
-
 import java.util.List;
 
 @Service
@@ -43,10 +41,12 @@ public class EventService {
     public List<Event> findByOffer(Offer offer) {
         return eventRepository.findAllByOffer(offer);
     }
-    public Event findByTemplateIdAndOffer(Long templateId, Offer offer){
+
+    public Event findByTemplateIdAndOffer(Long templateId, Offer offer) {
         return eventRepository.findByTemplateIdAndOffer(templateId, offer);
     }
-    public Event findFinalAndByOffer(Offer offer){
+
+    public Event findFinalAndByOffer(Offer offer) {
         return eventRepository.findByOfferAndFinalEventIsTrue(offer);
     }
 

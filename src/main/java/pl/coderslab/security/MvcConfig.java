@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import pl.coderslab.controller.CustomerConverter;
 import pl.coderslab.controller.EventConverter;
-
 import java.util.Locale;
 import java.util.Properties;
 
@@ -53,8 +52,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public JavaMailSender getJavaMailSender(){
-        JavaMailSenderImpl mailSender=new JavaMailSenderImpl();
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("kuba.kodowanie@gmail.com");
