@@ -8,13 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Project Deck Homepage</title>
 </head>
 <body>
 Homepage<br>
 <br>
 <a href="/register/designer">Designer: sign in</a><br>
-<a href="/register/customer/1">Customer: sign in</a><br>
 <a href="/customer/home">Customer: log in</a><br>
 <a href="/designer/home">Designer: log in</a><br>
 </body>

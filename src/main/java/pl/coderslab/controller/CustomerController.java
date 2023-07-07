@@ -44,7 +44,7 @@ public class CustomerController {
 
     @GetMapping(path = "/deal/accepted")
     String dealAccepted() {
-        Deal deal = dealService.getByCustomerId(1L);
+        Deal deal = dealService.getByCustomerId(sessionCustomer().getId());
         deal.setAccepted(true);
         dealService.save(deal);
         return "customer/customer-home";
@@ -55,6 +55,14 @@ public class CustomerController {
         //dać ID zalogowanego customera
         model.addAttribute("authorization", authorizationService.findByCustomerId(sessionCustomer().getId()));
         return "customer/authorization";
+    }
+
+    @GetMapping(path = "/authorization/accepted")
+    String authorizationAccepted() {
+        Authorization authorization=authorizationService.findByCustomerId(sessionCustomer().getId());
+        authorization.setAccepted(true);
+        authorizationService.save(authorization);
+        return "customer/customer-home";
     }
 
     @GetMapping(path = "/tree")

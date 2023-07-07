@@ -29,5 +29,6 @@ Dodatkowe ustalenia: ${deal.notes}<br>
 <c:if test="${false==deal.accepted}">
 <a href="/customer/deal/accepted">Zaakceptuj</a>
 </c:if>
+<a href="/customer/home">Wróć na stronę główną</a>
 </body>
 </html>

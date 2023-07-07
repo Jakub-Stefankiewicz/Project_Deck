@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 
 @Configuration
@@ -43,18 +44,9 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/admin/**").hasAnyRole("USER", "ADMIN")
-//                .and().formLogin().loginPage("/login")
-//                .and().logout().logoutSuccessUrl("/")
-//                .permitAll();
-//        return http.build();
-//    }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -69,8 +61,5 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider);
         return authenticationManagerBuilder.build();
     }
-
-
-
 
 }

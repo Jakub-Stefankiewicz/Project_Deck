@@ -15,8 +15,8 @@
 <a href="/customer/deal"> Podgląd umowy</a><br>
 <a href="/customer/authorization">Pełnomocnictwo</a><br>
 <a href="/customer/tree">Drzewo Twojego projektu</a><br>
-Kontakt z projektantem<br>
-Edytuj swoje dane<br>
+<%--Kontakt z projektantem<br>--%>
+<%--Edytuj swoje dane<br>--%>
 <form action="<c:url value="/logout"/>" method="post">
     <input class="fa fa-id-badge" type="submit" value="Wyloguj">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

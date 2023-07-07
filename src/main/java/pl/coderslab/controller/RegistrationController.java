@@ -12,6 +12,7 @@ import pl.coderslab.entity.User;
 import pl.coderslab.entity.UserToRegister;
 import pl.coderslab.service.CustomerService;
 import pl.coderslab.service.DesignerService;
+import pl.coderslab.service.MailService;
 import pl.coderslab.service.UserService;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class RegistrationController {
     private final UserService userService;
     private final CustomerService customerService;
     private final DesignerService designerService;
+
 
 
     /**

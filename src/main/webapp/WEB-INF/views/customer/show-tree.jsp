@@ -16,5 +16,6 @@
 <c:if test="${empty event}">Drzewo Twojego projektu jest jeszcze puste</c:if>
 ${event.eventName}
 <myTags:events list="${event.events}"/>
+<a href="/customer/home">Wróć na stronę główną</a>
 </body>
 </html>

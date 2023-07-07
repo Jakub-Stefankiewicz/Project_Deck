@@ -27,13 +27,11 @@
     reprezentującym firmę: <form:input path="designer.companyName"/><br>
     do wszystkich spraw związnych z wykonaniem projektu: <br>
     <form:input path="offer.projectType"/> <br>
-    za kwotę <form:input path="offer.price"/> zł<br>
     <form:hidden path="customer"/>
     <form:hidden path="designer"/>
     <form:hidden path="offer.id"/>
     <input type="submit" value="Prześlij do klienta">
 </form:form>
-
 <br>
 </body>
 </html>

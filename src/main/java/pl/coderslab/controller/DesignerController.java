@@ -1,6 +1,7 @@
 package pl.coderslab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class DesignerController {
     private final EventService eventService;
     private final AuthorizationService authorizationService;
     private final UserService userService;
+    private final MailService mailService;
 
 
     @ModelAttribute("designer")
@@ -292,7 +294,31 @@ public class DesignerController {
 
     @PostMapping(path = "/customers")
     String sendEmail(@RequestParam("email") String email) {
-        System.out.println(email);
+        String subject="Witamy na platformie projektowej Project Deck!";
+        String text="Witaj! \n"
+                + "Zostałeś zaproszony do korzystania z platformy projektowej!\n"
+                + "Utwórz swoje konto- klinkij w link : http://localhost:8080/register/customer/" + sessionDesigner().getId();
+        mailService.sendMessage(email, subject, text);
         return "redirect:/designer/customers";
+    }
+
+    @GetMapping(path = "/archive/{id}")
+    String archiveCustomer(@PathVariable("id") Long id){
+        Customer customer=customerService.loadCustomerById(id);
+        customer.setActive(false);
+        customerService.save(customer);
+        return "designer/designer-home";
+    }
+
+    @GetMapping(path = "/deal/show/{customerId}")
+    String showDeal(@PathVariable Long customerId, Model model){
+        model.addAttribute("deal", dealService.getByCustomerId(customerId));
+        return "designer/show-deal";
+    }
+
+    @GetMapping(path = "/authorization/show/{customerId}")
+    String showAuthorization(@PathVariable Long customerId, Model model){
+        model.addAttribute("authorization", authorizationService.findByCustomerId(customerId));
+        return "designer/show-authorization";
     }
 }

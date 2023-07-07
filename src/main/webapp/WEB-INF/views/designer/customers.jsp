@@ -31,24 +31,23 @@ Lista aktywnych klientów
                     <c:if test="${null!=customer.offer}"> Przypisany projekt: ${customer.offer.projectType} </c:if>
                     <c:if test="${null==customer.deal}"><a href="/designer/createdeal/${customer.id}">Sporządź
                         umowę</a></c:if>
-                    <c:if test="${null!=customer.deal}">Podgląd umowy</c:if>
+                    <c:if test="${null!=customer.deal}"><a href="/designer/deal/show/${customer.id}">Podgląd umowy</a></c:if>
                     <c:if test="${null==customer.authorization}"><a
                             href="/designer/create_authorization/${customer.id}">Sporządź pełnomocnictwo</a></c:if>
-                    <c:if test="${null!=customer.authorization}">Podgląd pełnomocnictwa</c:if>
-
-
+                    <c:if test="${null!=customer.authorization}"><a href="/designer/authorization/show/${customer.id}">Podgląd pełnomocnictwa</a></c:if><br>
+                    <a href="/designer/archive/${customer.id}">Zarchiwizuj klienta</a>
             </tr>
         </c:if>
     </c:forEach>
 </table>
 <a href="/designer/home">Wróć na stronę główną</a><br>
 
-<%--<form action="/designer/customers" method="post">--%>
-<%--    <label for="email">Email:</label>--%>
-<%--    Wpisz email klienta do wysłania zaproszenia<input type="text" id="email" name="email"/><br>--%>
-<%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
-<%--    <input type="submit" value="Wyślij"/>--%>
-<%--</form>--%>
+<form action="/designer/customers" method="post">
+    <label for="email">Email:</label>
+    Wpisz email klienta do wysłania zaproszenia<input type="text" id="email" name="email"/><br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <input type="submit" value="Wyślij"/>
+</form>
 
 </body>
 </html>

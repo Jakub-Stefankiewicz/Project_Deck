@@ -16,7 +16,7 @@ Menu:<br>
 <a href="/designer/offers/list">Rodzaje oferowanych projektów</a><br>
 <a href="/schema/list">Schematy projektów</a><br>
 <a href="/designer/customers">Aktywni klienci i projekty</a><br>
-<%--<a href="/designer/archives">Archiwum klientów i projektów</a><br>--%>
+<a href="/designer/archives">Archiwum klientów i projektów</a><br>
 <form action="<c:url value="/logout"/>" method="post">
     <input class="fa fa-id-badge" type="submit" value="Wyloguj">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

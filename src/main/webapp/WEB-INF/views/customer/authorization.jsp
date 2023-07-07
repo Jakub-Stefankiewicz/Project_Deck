@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Authorization</title>
@@ -21,6 +22,10 @@ Imię i naziwsko: ${authorization.designer.firstName} ${authorization.designer.l
 Adres zamieszkania: ${authorization.designer.postalCode} ${authorization.designer.city},
 ulica ${authorization.designer.street} numer ${authorization.designer.houseNumber}<br>
 reprezentującym firmę: ${authorization.designer.companyName}<br>
-do wszystkich spraw związnych z wykonaniem projektu: <br>
+do wszystkich spraw związnych z wykonaniem projektu: ${authorization.offer.projectType} <br>
+<c:if test="${false==authorization.accepted}">
+    <a href="/customer/authorization/accepted">Zaakceptuj</a>
+</c:if><br>
+<a href="/customer/home">Wróć na stronę główną</a>
 </body>
 </html>

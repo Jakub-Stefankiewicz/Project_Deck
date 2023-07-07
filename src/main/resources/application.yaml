@@ -19,3 +19,12 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kuba.kodowanie@gmail.com
+    password: ugejrlsjvtvjassz
+    properties:
+      "mail.transport.protocol": smtp
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true
