@@ -13,7 +13,7 @@ public class CustomerConverter implements Converter<String, Customer> {
     public CustomerRepository customerRepository;
 
     @Override
-    public Customer convert(@NotNull String source) {
+    public Customer convert(String source) {
         Optional<Customer> customer = customerRepository.findById(Long.parseLong(source));
         if (customer.isEmpty()) {
             throw new NotFoundException("Customer not found");

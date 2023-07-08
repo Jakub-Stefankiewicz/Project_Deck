@@ -72,6 +72,7 @@ public class EventController {
     @PostMapping(path = "/offer/add_events/{id}")
     String saveEventsOnOffer(Event event) {
         event.setId(null);
+        //In one offer can be only one final event.
         if (event.isFinalEvent()) {
             for (Event eventToFinalRemove : eventService.findByOffer(event.getOffer())) {
                 eventToFinalRemove.setFinalEvent(false);

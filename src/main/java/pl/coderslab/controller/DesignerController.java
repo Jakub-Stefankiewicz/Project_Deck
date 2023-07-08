@@ -41,14 +41,11 @@ public class DesignerController {
     /**
      * Designer homepage.
      *
-     * @param model          : model to create attribute.
-     * @param authentication : param to authenticate designer.
+     * @param model : model to create attribute.
      * @return : designer-home.jsp file.
      */
     @GetMapping(path = "/home")
-    String home(Model model, Authentication authentication) {
-        //UWAGA: DOPISAĆ Auth POBIERAJĄCEGO ID Z AKTUALNIE ZALOGOWANEGO DESIGNERA I PRZEKAZUJĄCEGO DO PONIŻSZEJ METODY ew zmienić na load by designer username
-
+    String home(Model model) {
         model.addAttribute("designerCustomers", customerService.loadAllCustomersByDesignerId(sessionDesigner().getId()));
         return "designer/designer-home";
     }

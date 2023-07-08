@@ -23,7 +23,7 @@ Adres zamieszkania: ${deal.designer.postalCode} ${deal.designer.city},
 ulica ${deal.designer.street} numer ${deal.designer.houseNumber}<br>
 reprezentującym firmę: ${deal.designer.companyName}<br>
 zwanym dalej Wykonawcą. <br>
-Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt XXXXXX za kwotę ${deal.value}<br>
+Zamawiający zleca a Wykonawca przyjmuje do realizacji projekt ${deal.offer.projectType} za kwotę ${deal.value}<br>
 Termin wykonania wynosi 3 miesiące od dnia podpinaia umowy.<br>
 Dodatkowe ustalenia: ${deal.notes}<br>
 <c:if test="${false==deal.accepted}">

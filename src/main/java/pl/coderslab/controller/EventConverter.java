@@ -15,7 +15,7 @@ public class EventConverter implements Converter<String, Event> {
     public EventRepository eventRepository;
 
     @Override
-    public Event convert(@NotNull String source) {
+    public Event convert(String source) {
         Optional<Event> event=eventRepository.findById(Long.parseLong(source));
         if (event.isEmpty()){
             throw new NotFoundException("Event not found");
